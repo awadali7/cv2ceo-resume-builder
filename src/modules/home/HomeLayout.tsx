@@ -51,13 +51,13 @@ const HomeLayout = () => {
             <Link href="#about-us" passHref={true}>
               <StyledButton variant="text">About us</StyledButton>
             </Link>
-            <a
+            {/* <a
               href={"https://github.com/sadanandpai/resume-builder"}
               target="_blank"
               rel="noopener noreferrer"
             >
               <BsGithub className="h-6 w-6" fill="white" />
-            </a>
+            </a> */}
           </NavBarActions>
         </div>
       </nav>
