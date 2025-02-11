@@ -1,6 +1,6 @@
-import { IItem } from '@/stores/index.interface';
-import { SectionHeading } from '../atoms/SectionHeading';
-import { useRef } from 'react';
+import { IItem } from "@/stores/index.interface";
+import { SectionHeading } from "../atoms/SectionHeading";
+import { useRef } from "react";
 import {
   useLanguages,
   useFrameworks,
@@ -9,10 +9,16 @@ import {
   useDatabases,
   useTechnologies,
   useTools,
-} from '../../../stores/skills';
-import { scrollToElement } from '../../../helpers/utils/index';
+} from "../../../stores/skills";
+import { scrollToElement } from "../../../helpers/utils/index";
 
-export const SkillsSection = ({ title, list }: { title: string; list: IItem[] }) => {
+export const SkillsSection = ({
+  title,
+  list,
+}: {
+  title: string;
+  list: IItem[];
+}) => {
   const skillRef = useRef<null | HTMLDivElement>(null);
   useLanguages.subscribe(() => {
     scrollToElement(skillRef);

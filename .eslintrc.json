@@ -7,7 +7,6 @@
     "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/typescript",
-    "prettier",
     "next"
   ]
 }

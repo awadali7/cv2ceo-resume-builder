@@ -1,11 +1,11 @@
-import { Context, createContext, useEffect } from 'react';
+import { Context, createContext, useEffect } from "react";
 
-import { AVAILABLE_TEMPLATES } from '@/helpers/constants';
-import { ThemeProvider } from '@mui/material/styles';
-import { useResumeStore } from '@/stores/useResumeStore';
-import { useTemplates } from '@/stores/useTemplate';
-import { useThemes } from '@/stores/themes';
-import { useZoom } from '@/stores/useZoom';
+import { AVAILABLE_TEMPLATES } from "@/helpers/constants";
+import { ThemeProvider } from "@mui/material/styles";
+import { useResumeStore } from "@/stores/useResumeStore";
+import { useTemplates } from "@/stores/useTemplate";
+import { useThemes } from "@/stores/themes";
+import { useZoom } from "@/stores/useZoom";
 
 // TODO: need to define types
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,8 +22,11 @@ export const ResumeLayout = () => {
 
   useEffect(() => {
     const selectedTemplateId =
-      localStorage.getItem('selectedTemplateId') || AVAILABLE_TEMPLATES['modern'].id;
-    useTemplates.getState().setTemplate(AVAILABLE_TEMPLATES[selectedTemplateId]);
+      localStorage.getItem("selectedTemplateId") ||
+      AVAILABLE_TEMPLATES["modern"].id;
+    useTemplates
+      .getState()
+      .setTemplate(AVAILABLE_TEMPLATES[selectedTemplateId]);
   }, []);
 
   return (
@@ -34,7 +37,9 @@ export const ResumeLayout = () => {
       >
         <div className="w-[210mm] h-[296mm] bg-white my-0 mx-auto">
           <StateContext.Provider value={resumeData}>
-            <ThemeProvider theme={selectedTheme}>{Template && <Template />}</ThemeProvider>
+            <ThemeProvider theme={selectedTheme}>
+              {Template && <Template />}
+            </ThemeProvider>
           </StateContext.Provider>
         </div>
       </div>

@@ -1,9 +1,12 @@
-import { create } from 'zustand';
-import { GetState, SetState } from './store.interface';
-import { persist } from 'zustand/middleware';
-import { produce } from 'immer';
-import resumeData from '@/helpers/constants/resume-data.json';
-import { IVolunteeringItem, IVolunteeringStore } from './volunteering.interface';
+import { create } from "zustand";
+import { GetState, SetState } from "./store.interface";
+import { persist } from "zustand/middleware";
+import { produce } from "immer";
+import resumeData from "@/helpers/constants/resume-data.json";
+import {
+  IVolunteeringItem,
+  IVolunteeringStore,
+} from "./volunteering.interface";
 
 const addVolunteering =
   (set: SetState<IVolunteeringStore>) =>
@@ -15,7 +18,7 @@ const addVolunteering =
     endDate,
     summary,
     id,
-    url = '',
+    url = "",
     highlights = [],
   }: IVolunteeringItem) =>
     set(
@@ -31,15 +34,16 @@ const addVolunteering =
           url,
           highlights,
         });
-      })
+      }),
     );
 
-const removeVolunteeringExp = (set: SetState<IVolunteeringStore>) => (index: number) =>
-  set((state) => ({
-    volunteeredExps: state.volunteeredExps
-      .slice(0, index)
-      .concat(state.volunteeredExps.slice(index + 1)),
-  }));
+const removeVolunteeringExp =
+  (set: SetState<IVolunteeringStore>) => (index: number) =>
+    set((state) => ({
+      volunteeredExps: state.volunteeredExps
+        .slice(0, index)
+        .concat(state.volunteeredExps.slice(index + 1)),
+    }));
 
 const setVolunteeringExps =
   (set: SetState<IVolunteeringStore>) => (values: IVolunteeringItem[]) => {
@@ -49,17 +53,19 @@ const setVolunteeringExps =
   };
 
 const updatedVolunteeringExp =
-  (set: SetState<IVolunteeringStore>) => (index: number, updatedInfo: IVolunteeringItem) => {
+  (set: SetState<IVolunteeringStore>) =>
+  (index: number, updatedInfo: IVolunteeringItem) => {
     set(
       produce((state: IVolunteeringStore) => {
         state.volunteeredExps[index] = updatedInfo;
-      })
+      }),
     );
   };
 
-const getVolunteeringExp = (get: GetState<IVolunteeringStore>) => (index: number) => {
-  return get().volunteeredExps[index];
-};
+const getVolunteeringExp =
+  (get: GetState<IVolunteeringStore>) => (index: number) => {
+    return get().volunteeredExps[index];
+  };
 
 const onMoveUp = (set: SetState<IVolunteeringStore>) => (index: number) => {
   set(
@@ -69,7 +75,7 @@ const onMoveUp = (set: SetState<IVolunteeringStore>) => (index: number) => {
         state.volunteeredExps[index] = state.volunteeredExps[index - 1];
         state.volunteeredExps[index - 1] = currentExperience;
       }
-    })
+    }),
   );
 };
 
@@ -82,7 +88,7 @@ const onMoveDown = (set: SetState<IVolunteeringStore>) => (index: number) => {
         state.volunteeredExps[index] = state.volunteeredExps[index + 1];
         state.volunteeredExps[index + 1] = currentExperience;
       }
-    })
+    }),
   );
 };
 
@@ -98,6 +104,6 @@ export const useVoluteeringStore = create<IVolunteeringStore>()(
       onmovedown: onMoveDown(set),
       updatedVolunteeringExp: updatedVolunteeringExp(set),
     }),
-    { name: 'volunteering' }
-  )
+    { name: "volunteering" },
+  ),
 );

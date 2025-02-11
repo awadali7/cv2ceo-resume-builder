@@ -1,48 +1,51 @@
-import React, { ChangeEvent, Fragment, useCallback } from 'react';
-import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
-import { useExperiences } from '@/stores/experience';
-import { IExperienceItem } from '@/stores/experience.interface';
-import { SwitchWidget } from '@/helpers/common/atoms/Switch';
-import { RichtextEditor } from '@/helpers/common/components/richtext';
-import { DATE_PICKER_FORMAT } from '@/helpers/constants';
+import React, { ChangeEvent, Fragment, useCallback } from "react";
+import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { useExperiences } from "@/stores/experience";
+import { IExperienceItem } from "@/stores/experience.interface";
+import { SwitchWidget } from "@/helpers/common/atoms/Switch";
+import { RichtextEditor } from "@/helpers/common/components/richtext";
+import { DATE_PICKER_FORMAT } from "@/helpers/constants";
 
 interface IExperienceProps {
   experienceInfo: IExperienceItem;
   currentIndex: number;
 }
 
-const Experience: React.FC<IExperienceProps> = ({ experienceInfo, currentIndex }) => {
+const Experience: React.FC<IExperienceProps> = ({
+  experienceInfo,
+  currentIndex,
+}) => {
   const onChangeHandler = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (name: string, value: any) => {
       const currentExpInfo = { ...experienceInfo };
       const updateExperience = useExperiences.getState().updateExperience;
       switch (name) {
-        case 'companyName':
+        case "companyName":
           currentExpInfo.name = value;
           break;
-        case 'position':
+        case "position":
           currentExpInfo.position = value;
           break;
-        case 'startDate':
+        case "startDate":
           if (value?.isValid()) {
             currentExpInfo.startDate = value;
           }
           break;
-        case 'isWorkingHere':
+        case "isWorkingHere":
           currentExpInfo.isWorkingHere = value;
           break;
-        case 'endDate':
+        case "endDate":
           if (value?.isValid()) {
             currentExpInfo.endDate = value;
           }
           break;
-        case 'years':
+        case "years":
           currentExpInfo.years = value;
           break;
-        case 'summary':
+        case "summary":
           currentExpInfo.summary = value;
           break;
         default:
@@ -50,14 +53,14 @@ const Experience: React.FC<IExperienceProps> = ({ experienceInfo, currentIndex }
       }
       updateExperience(currentIndex, currentExpInfo);
     },
-    [currentIndex, experienceInfo]
+    [currentIndex, experienceInfo],
   );
 
   const onSummaryChange = useCallback(
     (htmlOutput: string) => {
-      onChangeHandler('summary', htmlOutput);
+      onChangeHandler("summary", htmlOutput);
     },
-    [onChangeHandler]
+    [onChangeHandler],
   );
 
   return (
@@ -68,13 +71,13 @@ const Experience: React.FC<IExperienceProps> = ({ experienceInfo, currentIndex }
         value={experienceInfo.name}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          onChangeHandler('companyName', value);
+          onChangeHandler("companyName", value);
         }}
         autoComplete="off"
         fullWidth
         required
         autoFocus={true}
-        sx={{ marginBottom: '26px' }}
+        sx={{ marginBottom: "26px" }}
       />
       <TextField
         label="Position"
@@ -82,45 +85,52 @@ const Experience: React.FC<IExperienceProps> = ({ experienceInfo, currentIndex }
         value={experienceInfo.position}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          onChangeHandler('position', value);
+          onChangeHandler("position", value);
         }}
         autoComplete="off"
         fullWidth
         required
-        sx={{ marginBottom: '26px' }}
+        sx={{ marginBottom: "26px" }}
       />
       <DatePicker
         label="Start date"
         format={DATE_PICKER_FORMAT}
         value={dayjs(experienceInfo.startDate)}
         onChange={(newDate) => {
-          onChangeHandler('startDate', newDate);
+          onChangeHandler("startDate", newDate);
         }}
         slotProps={{
-          textField: { variant: 'filled', autoComplete: 'off', fullWidth: true, required: true },
+          textField: {
+            variant: "filled",
+            autoComplete: "off",
+            fullWidth: true,
+            required: true,
+          },
         }}
       />
       <SwitchWidget
-        label={'I currently work here'}
+        label={"I currently work here"}
         value={experienceInfo.isWorkingHere ?? false}
         onChange={(newValue: boolean) => {
-          onChangeHandler('isWorkingHere', newValue);
+          onChangeHandler("isWorkingHere", newValue);
         }}
       />
       <DatePicker
         label="End date"
         format={DATE_PICKER_FORMAT}
-        value={experienceInfo.isWorkingHere ? null : dayjs(experienceInfo.endDate)}
+        value={
+          experienceInfo.isWorkingHere ? null : dayjs(experienceInfo.endDate)
+        }
         onChange={(newDate) => {
-          onChangeHandler('endDate', newDate);
+          onChangeHandler("endDate", newDate);
         }}
         slotProps={{
           textField: {
-            variant: 'filled',
-            autoComplete: 'off',
+            variant: "filled",
+            autoComplete: "off",
             fullWidth: true,
             required: true,
-            sx: { marginBottom: '26px' },
+            sx: { marginBottom: "26px" },
           },
         }}
         disabled={experienceInfo.isWorkingHere}
@@ -131,11 +141,11 @@ const Experience: React.FC<IExperienceProps> = ({ experienceInfo, currentIndex }
         value={experienceInfo.years}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          onChangeHandler('years', value);
+          onChangeHandler("years", value);
         }}
         autoComplete="off"
         fullWidth
-        sx={{ marginBottom: '26px' }}
+        sx={{ marginBottom: "26px" }}
       />
       <RichtextEditor
         label="Few points on this work experience"

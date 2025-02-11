@@ -1,7 +1,7 @@
-import { useTemplates } from '@/stores/useTemplate';
-import { useZoom } from '@/stores/useZoom';
-import ResumeController from '../atoms/ResumeController';
-import { ResumeTitle } from '../atoms/ResumeTitle';
+import { useTemplates } from "@/stores/useTemplate";
+import { useZoom } from "@/stores/useZoom";
+import ResumeController from "../atoms/ResumeController";
+import { ResumeTitle } from "../atoms/ResumeTitle";
 
 const ResumeHeader = () => {
   const { zoomIn, zoomOut, resetZoom } = useZoom.getState();
@@ -10,7 +10,11 @@ const ResumeHeader = () => {
   return (
     <div className="flex items-center justify-between">
       <ResumeTitle title={templateName} />
-      <ResumeController zoomIn={zoomIn} zoomOut={zoomOut} resetZoom={resetZoom} />
+      <ResumeController
+        zoomIn={zoomIn}
+        zoomOut={zoomOut}
+        resetZoom={resetZoom}
+      />
     </div>
   );
 };

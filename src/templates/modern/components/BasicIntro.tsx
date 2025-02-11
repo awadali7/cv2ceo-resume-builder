@@ -1,11 +1,11 @@
-import { BsGlobe } from 'react-icons/bs';
-import { ProfileContact } from '../atoms/ProfileContact';
-import { ProfileImage } from '@/helpers/common/components/ProfileImage';
-import { ProfileName } from '../atoms/ProfileName';
-import { SectionSubtitle } from '../atoms/SectionSubtitle';
-import { IProfiles } from 'src/stores/basic.interface';
-import React from 'react';
-import { socialIcons } from 'src/helpers/icons';
+import { BsGlobe } from "react-icons/bs";
+import { ProfileContact } from "../atoms/ProfileContact";
+import { ProfileImage } from "@/helpers/common/components/ProfileImage";
+import { ProfileName } from "../atoms/ProfileName";
+import { SectionSubtitle } from "../atoms/SectionSubtitle";
+import { IProfiles } from "src/stores/basic.interface";
+import React from "react";
+import { socialIcons } from "src/helpers/icons";
 
 function SocialIcons({ profiles }: { profiles: IProfiles[] }) {
   return (
@@ -57,7 +57,7 @@ export const BasicIntro = ({
   return (
     <div
       className={`flex justify-between ${
-        isProfileLinkAvailable ? 'items-end' : 'items-center'
+        isProfileLinkAvailable ? "items-end" : "items-center"
       }  p-2`}
     >
       <div>

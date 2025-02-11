@@ -1,11 +1,12 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { SetState } from './store.interface';
-import { IBasicDetailsItem, IBasicDetailsStore } from './basic.interface';
-import resumeData from '@/helpers/constants/resume-data.json';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { SetState } from "./store.interface";
+import { IBasicDetailsItem, IBasicDetailsStore } from "./basic.interface";
+import resumeData from "@/helpers/constants/resume-data.json";
 
-const onChangeText = (set: SetState<IBasicDetailsStore>) => (values: IBasicDetailsItem) =>
-  set({ values });
+const onChangeText =
+  (set: SetState<IBasicDetailsStore>) => (values: IBasicDetailsItem) =>
+    set({ values });
 
 export const useBasicDetails = create<IBasicDetailsStore>()(
   persist(
@@ -13,6 +14,6 @@ export const useBasicDetails = create<IBasicDetailsStore>()(
       values: resumeData.basics,
       reset: onChangeText(set),
     }),
-    { name: 'basic' }
-  )
+    { name: "basic" },
+  ),
 );

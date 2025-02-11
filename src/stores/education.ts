@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { GetState, SetState } from './store.interface';
-import { persist } from 'zustand/middleware';
-import { produce } from 'immer';
-import resumeData from '@/helpers/constants/resume-data.json';
-import { IEducationItem, IEducationStore } from './education.interface';
+import { create } from "zustand";
+import { GetState, SetState } from "./store.interface";
+import { persist } from "zustand/middleware";
+import { produce } from "immer";
+import resumeData from "@/helpers/constants/resume-data.json";
+import { IEducationItem, IEducationStore } from "./education.interface";
 
 const addEducation =
   (set: SetState<IEducationStore>) =>
@@ -33,19 +33,22 @@ const addEducation =
           courses,
           score,
         });
-      })
+      }),
     );
 
 const removeEducation = (set: SetState<IEducationStore>) => (index: number) =>
   set((state) => ({
-    academics: state.academics.slice(0, index).concat(state.academics.slice(index + 1)),
+    academics: state.academics
+      .slice(0, index)
+      .concat(state.academics.slice(index + 1)),
   }));
 
-const setEducation = (set: SetState<IEducationStore>) => (values: IEducationItem[]) => {
-  set({
-    academics: values,
-  });
-};
+const setEducation =
+  (set: SetState<IEducationStore>) => (values: IEducationItem[]) => {
+    set({
+      academics: values,
+    });
+  };
 
 const getEducation = (get: GetState<IEducationStore>) => (index: number) => {
   return get().academics[index];
@@ -59,7 +62,7 @@ const onMoveUp = (set: SetState<IEducationStore>) => (index: number) => {
         state.academics[index] = state.academics[index - 1];
         state.academics[index - 1] = currentExperience;
       }
-    })
+    }),
   );
 };
 const onMoveDown = (set: SetState<IEducationStore>) => (index: number) => {
@@ -71,16 +74,17 @@ const onMoveDown = (set: SetState<IEducationStore>) => (index: number) => {
         state.academics[index] = state.academics[index + 1];
         state.academics[index + 1] = currentExperience;
       }
-    })
+    }),
   );
 };
 
 const updateEducation =
-  (set: SetState<IEducationStore>) => (index: number, updatedInfo: IEducationItem) => {
+  (set: SetState<IEducationStore>) =>
+  (index: number, updatedInfo: IEducationItem) => {
     set(
       produce((state: IEducationStore) => {
         state.academics[index] = updatedInfo;
-      })
+      }),
     );
   };
 
@@ -96,6 +100,6 @@ export const useEducations = create<IEducationStore>()(
       onmovedown: onMoveDown(set),
       updateEducation: updateEducation(set),
     }),
-    { name: 'education' }
-  )
+    { name: "education" },
+  ),
 );

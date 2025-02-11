@@ -1,8 +1,8 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { TextField } from '@mui/material';
-import SliderValue from '../atoms/SliderValue';
-import { OutlinedButton, TextButton } from 'src/helpers/common/atoms/Buttons';
-import { ISkillItem } from 'src/stores/skill.interface';
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { TextField } from "@mui/material";
+import SliderValue from "../atoms/SliderValue";
+import { OutlinedButton, TextButton } from "src/helpers/common/atoms/Buttons";
+import { ISkillItem } from "src/stores/skill.interface";
 
 const EditSkill = ({
   editHandler,
@@ -11,7 +11,15 @@ const EditSkill = ({
   skillData,
   onCancel,
 }: {
-  editHandler: ({ name, level, index }: { name: string; level: number; index: number }) => void;
+  editHandler: ({
+    name,
+    level,
+    index,
+  }: {
+    name: string;
+    level: number;
+    index: number;
+  }) => void;
   items: ISkillItem[];
   hasLevel: boolean;
   skillData: { name: string; level: number; index: number };
@@ -20,7 +28,7 @@ const EditSkill = ({
   const [name, setName] = useState(skillData.name);
   const [level, setLevel] = useState(skillData.level);
   const [disabled, setDisabled] = useState(true);
-  const [errorText, setErrorText] = useState('');
+  const [errorText, setErrorText] = useState("");
   const inputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
@@ -30,7 +38,7 @@ const EditSkill = ({
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    setErrorText('');
+    setErrorText("");
   };
 
   const submitHandler = (e: ChangeEvent<HTMLFormElement>) => {
@@ -46,10 +54,10 @@ const EditSkill = ({
       items.find((item) => item.name.toLowerCase() === trimmedLowerText) &&
       items[skillData.index].name !== name
     ) {
-      setErrorText('Duplicate entry');
+      setErrorText("Duplicate entry");
     } else {
-      setName('');
-      setErrorText('');
+      setName("");
+      setErrorText("");
       editHandler({ name: trimmedText, level, index: skillData.index });
       onCancel();
       inputRef.current?.focus();

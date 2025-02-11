@@ -1,11 +1,12 @@
-import Color from 'color';
-import { IProfiles } from '@/stores/basic.interface';
-import React from 'react';
-import { socialIcons } from '@/helpers/icons';
-import styled from '@emotion/styled';
+import Color from "color";
+import { IProfiles } from "@/stores/basic.interface";
+import React from "react";
+import { socialIcons } from "@/helpers/icons";
+import styled from "@emotion/styled";
 
 const SectionHolder = styled.div`
-  border: 1px solid ${(props) => Color(props.theme.highlighterColor).alpha(0.75).toString()};
+  border: 1px solid
+    ${(props) => Color(props.theme.highlighterColor).alpha(0.75).toString()};
   border-radius: 5px;
   padding: 15px 10px 10px 10px;
   position: relative;
@@ -67,10 +68,13 @@ export function Section({
 }) {
   return (
     <SectionHolder>
-      <div className="header flex justify-center items-center gap-1 max-w-[60%]" title={title}>
+      <div
+        className="header flex justify-center items-center gap-1 max-w-[60%]"
+        title={title}
+      >
         <span
           className={`${
-            titleClassname ? titleClassname : ''
+            titleClassname ? titleClassname : ""
           } whitespace-nowrap overflow-hidden overflow-ellipsis`}
         >
           {title}

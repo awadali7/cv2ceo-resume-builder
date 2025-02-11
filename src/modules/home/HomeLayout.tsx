@@ -1,12 +1,11 @@
-import { NavBarActions, StyledButton } from '../builder/nav-bar/atoms';
-import { AnimationGeneratorType, motion, useAnimation } from 'framer-motion';
+import { NavBarActions, StyledButton } from "../builder/nav-bar/atoms";
+import { AnimationGeneratorType, motion, useAnimation } from "framer-motion";
 
-import { BsGithub } from 'react-icons/bs';
-import { Button } from '@mui/material';
-import FeatureSection from './components/Feature';
-import Image from 'next/image';
-import Link from 'next/link';
-import Person from './components/Person';
+import { BsGithub } from "react-icons/bs";
+import { Button } from "@mui/material";
+import FeatureSection from "./components/Feature";
+import Image from "next/image";
+import Link from "next/link";
 
 const HomeLayout = () => {
   const controls = useAnimation();
@@ -17,16 +16,25 @@ const HomeLayout = () => {
     opacity: [0, 1],
   };
   const transitionEffects = {
-    type: 'spring' as AnimationGeneratorType,
+    type: "spring" as AnimationGeneratorType,
     stiffness: 400,
     damping: 17,
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: [0, 1] }} className="scroll-smooth">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1] }}
+      className="scroll-smooth"
+    >
       <nav className="sticky top-0 z-20 h-14 w-full bg-resume-800 flex py-2.5 px-4 xl:px-60 items-center shadow-level-8dp">
         <Link href="/">
-          <Image src={'/icons/resume-icon.png'} alt="logo" height="36" width="36" />
+          <Image
+            src={"/icons/resume-icon.png"}
+            alt="logo"
+            height="36"
+            width="36"
+          />
         </Link>
         <div className="flex-auto flex justify-between items-center ml-5">
           <NavBarActions>
@@ -44,7 +52,7 @@ const HomeLayout = () => {
               <StyledButton variant="text">About us</StyledButton>
             </Link>
             <a
-              href={'https://github.com/sadanandpai/resume-builder'}
+              href={"https://github.com/sadanandpai/resume-builder"}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -55,7 +63,7 @@ const HomeLayout = () => {
       </nav>
       <div
         style={{
-          background: 'linear-gradient(180deg, #E7EEFA 50%, #FFFFFF 100%)',
+          background: "linear-gradient(180deg, #E7EEFA 50%, #FFFFFF 100%)",
           fontFamily: "'Roboto Slab', serif",
         }}
       >
@@ -82,8 +90,12 @@ const HomeLayout = () => {
               />
             </div>
             <div className="col-span-12 sm:col-span-8">
-              <h3 className="text-xl md:text-2xl mb-2 text-resume-400">SIMPLEST WAY TO BUILD A</h3>
-              <h1 className="text-5xl mb-12 text-resume-800">Professional Resume</h1>
+              <h3 className="text-xl md:text-2xl mb-2 text-resume-400">
+                SIMPLEST WAY TO BUILD A
+              </h3>
+              <h1 className="text-5xl mb-12 text-resume-800">
+                Professional Resume
+              </h1>
 
               <div className="flex mb-10">
                 <div className="bg-resume-800 w-1 rounded-lg"></div>
@@ -129,7 +141,12 @@ const HomeLayout = () => {
         >
           <div className="grid grid-cols-12 items-center text-center">
             <div className="col-span-12 lg:col-span-4 mb-4 lg:mb-0 flex flex-col items-center gap-2">
-              <Image src={'/icons/palette.svg'} alt="logo" height="48" width="48" />
+              <Image
+                src={"/icons/palette.svg"}
+                alt="logo"
+                height="48"
+                width="48"
+              />
               <p className="text-resume-800 text-xl mt-2">
                 Do you want to make your own <strong>template?</strong>
               </p>
@@ -138,7 +155,12 @@ const HomeLayout = () => {
               <p>+</p>
             </div>
             <div className="col-span-12 lg:col-span-2 flex flex-col items-center gap-2">
-              <Image src={'/icons/terminal.svg'} alt="logo" height="48" width="48" />
+              <Image
+                src={"/icons/terminal.svg"}
+                alt="logo"
+                height="48"
+                width="48"
+              />
               <p className="text-resume-800 text-xl mt-2">
                 Do you write <strong>React</strong> code?
               </p>
@@ -146,11 +168,10 @@ const HomeLayout = () => {
             <div className="invisible lg:visible lg:col-span-2 text-resume-800 text-4xl mx-6">
               <p>=</p>
             </div>
-            
           </div>
         </div>
       </div>
-{/* 
+      {/* 
       <div
         id="about-us"
         className="mx-6 md:mx-40 xl:mx-60 my-32"

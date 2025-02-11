@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { Fragment } from 'react';
-import { RichtextEditor } from '@/helpers/common/components/richtext';
+import React, { Fragment } from "react";
+import { RichtextEditor } from "@/helpers/common/components/richtext";
 
 const About = ({
   basicTabs,
@@ -15,7 +15,7 @@ const About = ({
         label="About me"
         value={basicTabs.summary}
         onChange={(htmlOutput) => {
-          onChangeHandler(htmlOutput, 'summary');
+          onChangeHandler(htmlOutput, "summary");
         }}
         name="summary"
       />
@@ -23,7 +23,7 @@ const About = ({
         label="Career objective"
         value={basicTabs.objective}
         onChange={(htmlOutput) => {
-          onChangeHandler(htmlOutput, 'objective');
+          onChangeHandler(htmlOutput, "objective");
         }}
         name="objective"
       />

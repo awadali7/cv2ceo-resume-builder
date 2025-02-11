@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ChangeEvent, Fragment } from 'react';
-import TextField from '@mui/material/TextField';
+import React, { ChangeEvent, Fragment } from "react";
+import TextField from "@mui/material/TextField";
 
 const Contacts = ({
   basicTabs,
@@ -16,7 +16,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.name}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'name');
+          onChangeHandler(event.target.value, "name");
         }}
       />
       <TextField
@@ -24,7 +24,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.image}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'image');
+          onChangeHandler(event.target.value, "image");
         }}
       />
       <TextField
@@ -32,7 +32,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.label}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'label');
+          onChangeHandler(event.target.value, "label");
         }}
       />
       <TextField
@@ -40,7 +40,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.email}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'email');
+          onChangeHandler(event.target.value, "email");
         }}
       />
       <TextField
@@ -48,7 +48,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.url}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'url');
+          onChangeHandler(event.target.value, "url");
         }}
       />
       <TextField
@@ -56,7 +56,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.phone}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'phone');
+          onChangeHandler(event.target.value, "phone");
         }}
       />
       <TextField
@@ -66,7 +66,7 @@ const Contacts = ({
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
           const location = basicTabs.location;
           location.city = event.target.value;
-          onChangeHandler(location, 'location');
+          onChangeHandler(location, "location");
         }}
       />
       <TextField
@@ -74,7 +74,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.relExp}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'relExp');
+          onChangeHandler(event.target.value, "relExp");
         }}
       />
       <TextField
@@ -82,7 +82,7 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.totalExp}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, 'totalExp');
+          onChangeHandler(event.target.value, "totalExp");
         }}
       />
     </Fragment>

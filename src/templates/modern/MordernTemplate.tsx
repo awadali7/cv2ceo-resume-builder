@@ -1,14 +1,14 @@
-import { BasicIntro } from './components/BasicIntro';
-import { EducationSection } from './components/Education';
-import { VolunteerSection } from './components/Volunteer';
-import { Objective } from './components/Objective';
-import { SkillsSection } from './components/Skills';
-import { SummarySection } from './components/Summary';
-import { WorkSection } from './components/Work';
-import { AwardSection } from './components/Awards';
-import { useContext } from 'react';
-import { StateContext } from '@/modules/builder/resume/ResumeLayout';
-import { SectionValidator } from '@/helpers/common/components/ValidSectionRenderer';
+import { BasicIntro } from "./components/BasicIntro";
+import { EducationSection } from "./components/Education";
+import { VolunteerSection } from "./components/Volunteer";
+import { Objective } from "./components/Objective";
+import { SkillsSection } from "./components/Skills";
+import { SummarySection } from "./components/Summary";
+import { WorkSection } from "./components/Work";
+import { AwardSection } from "./components/Awards";
+import { useContext } from "react";
+import { StateContext } from "@/modules/builder/resume/ResumeLayout";
+import { SectionValidator } from "@/helpers/common/components/ValidSectionRenderer";
 
 export default function ModernTemplate() {
   const resumeData = useContext(StateContext);
@@ -24,19 +24,19 @@ export default function ModernTemplate() {
   return (
     <div className="p-2">
       <BasicIntro
-        name={basics.name || ''}
-        label={basics.label || ''}
-        url={basics.url || ''}
-        email={basics.email || ''}
-        city={basics.location?.city || ''}
-        phone={basics.phone || ''}
-        image={basics.image || ''}
+        name={basics.name || ""}
+        label={basics.label || ""}
+        url={basics.url || ""}
+        email={basics.email || ""}
+        city={basics.location?.city || ""}
+        phone={basics.phone || ""}
+        image={basics.image || ""}
         profiles={basics.profiles || []}
       />
       <div className="flex">
         <div className="basis-[60%] p-3">
           <SectionValidator value={basics.summary}>
-            <SummarySection summary={basics.summary || ''} />
+            <SummarySection summary={basics.summary || ""} />
           </SectionValidator>
 
           <SectionValidator value={work}>
@@ -50,7 +50,7 @@ export default function ModernTemplate() {
 
         <div className="basis-[40%] p-3">
           <SectionValidator value={basics.objective}>
-            <Objective objective={basics.objective || ''} />
+            <Objective objective={basics.objective || ""} />
           </SectionValidator>
 
           <SectionValidator value={skills.languages}>
@@ -58,7 +58,10 @@ export default function ModernTemplate() {
           </SectionValidator>
 
           <SectionValidator value={skills.technologies}>
-            <SkillsSection title="Technologies" list={skills.technologies || []} />
+            <SkillsSection
+              title="Technologies"
+              list={skills.technologies || []}
+            />
           </SectionValidator>
 
           <SectionValidator value={skills.frameworks}>
@@ -84,4 +87,3 @@ export default function ModernTemplate() {
     </div>
   );
 }
-

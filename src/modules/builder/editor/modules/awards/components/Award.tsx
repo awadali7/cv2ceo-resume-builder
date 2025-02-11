@@ -1,12 +1,12 @@
-import React, { ChangeEvent, Fragment, useCallback } from 'react';
-import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import React, { ChangeEvent, Fragment, useCallback } from "react";
+import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { useAwards } from '@/stores/awards';
-import { IAwardItem } from '@/stores/awards.interface';
-import { RichtextEditor } from '@/helpers/common/components/richtext';
-import { DATE_PICKER_FORMAT } from '@/helpers/constants';
-import dayjs from 'dayjs';
+import { useAwards } from "@/stores/awards";
+import { IAwardItem } from "@/stores/awards.interface";
+import { RichtextEditor } from "@/helpers/common/components/richtext";
+import { DATE_PICKER_FORMAT } from "@/helpers/constants";
+import dayjs from "dayjs";
 
 interface IAwardComp {
   awardInfo: IAwardItem;
@@ -20,16 +20,16 @@ const AwardComp: React.FC<IAwardComp> = ({ awardInfo, currentIndex }) => {
       const currentAwardInfo = { ...awardInfo };
       const updateAward = useAwards.getState().updateAward;
       switch (name) {
-        case 'title':
+        case "title":
           currentAwardInfo.title = value;
           break;
-        case 'awarder':
+        case "awarder":
           currentAwardInfo.awarder = value;
           break;
-        case 'date':
+        case "date":
           currentAwardInfo.date = value;
           break;
-        case 'summary':
+        case "summary":
           currentAwardInfo.summary = value;
           break;
         default:
@@ -37,14 +37,14 @@ const AwardComp: React.FC<IAwardComp> = ({ awardInfo, currentIndex }) => {
       }
       updateAward(currentIndex, currentAwardInfo);
     },
-    [currentIndex, awardInfo]
+    [currentIndex, awardInfo],
   );
 
   const onSummaryChange = useCallback(
     (htmlOutput: string) => {
-      onChangeHandler('summary', htmlOutput);
+      onChangeHandler("summary", htmlOutput);
     },
-    [onChangeHandler]
+    [onChangeHandler],
   );
 
   return (
@@ -55,13 +55,13 @@ const AwardComp: React.FC<IAwardComp> = ({ awardInfo, currentIndex }) => {
         value={awardInfo.title}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          onChangeHandler('title', value);
+          onChangeHandler("title", value);
         }}
         autoComplete="off"
         fullWidth
         required
         autoFocus={true}
-        sx={{ marginBottom: '26px' }}
+        sx={{ marginBottom: "26px" }}
       />
       <TextField
         label="Awarded by"
@@ -69,27 +69,27 @@ const AwardComp: React.FC<IAwardComp> = ({ awardInfo, currentIndex }) => {
         value={awardInfo.awarder}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          onChangeHandler('awarder', value);
+          onChangeHandler("awarder", value);
         }}
         autoComplete="off"
         fullWidth
         required
-        sx={{ marginBottom: '26px' }}
+        sx={{ marginBottom: "26px" }}
       />
       <DatePicker
         label="Date"
         value={dayjs(awardInfo.date)}
         onChange={(newDate) => {
-          onChangeHandler('date', newDate);
+          onChangeHandler("date", newDate);
         }}
         format={DATE_PICKER_FORMAT}
         slotProps={{
           textField: {
-            variant: 'filled',
-            autoComplete: 'off',
+            variant: "filled",
+            autoComplete: "off",
             fullWidth: true,
             required: true,
-            sx: { marginBottom: '26px' },
+            sx: { marginBottom: "26px" },
           },
         }}
       />

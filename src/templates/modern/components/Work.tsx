@@ -1,13 +1,13 @@
-import { dateParser } from '@/helpers/utils';
-import { HTMLRenderer } from '@/helpers/common/components/HTMLRenderer';
-import { IWorkIntrf } from '@/stores/index.interface';
-import { SectionHeading } from '../atoms/SectionHeading';
-import { SectionList } from '../atoms/SectionList';
-import { SectionSubtitle } from '../atoms/SectionSubtitle';
-import { SectionTitle } from '../atoms/SectionTitle';
-import { useRef } from 'react';
-import { useExperiences } from '../../../stores/experience';
-import { scrollToElement } from '../../../helpers/utils/index';
+import { dateParser } from "@/helpers/utils";
+import { HTMLRenderer } from "@/helpers/common/components/HTMLRenderer";
+import { IWorkIntrf } from "@/stores/index.interface";
+import { SectionHeading } from "../atoms/SectionHeading";
+import { SectionList } from "../atoms/SectionList";
+import { SectionSubtitle } from "../atoms/SectionSubtitle";
+import { SectionTitle } from "../atoms/SectionTitle";
+import { useRef } from "react";
+import { useExperiences } from "../../../stores/experience";
+import { scrollToElement } from "../../../helpers/utils/index";
 
 export const WorkSection = ({ experience }: { experience: IWorkIntrf[] }) => {
   const experienceRef = useRef<null | HTMLDivElement>(null);
@@ -27,8 +27,8 @@ export const WorkSection = ({ experience }: { experience: IWorkIntrf[] }) => {
               <SectionSubtitle label={item.position} />
               <div>
                 <p className="text-xs">
-                  {dateParser(item.startDate)} -{' '}
-                  {item.isWorkingHere ? 'present' : dateParser(item.endDate)}
+                  {dateParser(item.startDate)} -{" "}
+                  {item.isWorkingHere ? "present" : dateParser(item.endDate)}
                 </p>
               </div>
             </div>

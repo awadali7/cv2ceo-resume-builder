@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import DataHeaders from './components/EditHeaders';
-import EditSection from './components/EditSection';
-import ErrorBoundary from '@/helpers/common/components/ErrorBoundary';
-import { OutlinedButton } from '@/helpers/common/atoms/Buttons';
-import { headers } from '@/helpers/constants/editor-data';
-import { resetResumeStore } from '@/stores/useResumeStore';
+import DataHeaders from "./components/EditHeaders";
+import EditSection from "./components/EditSection";
+import ErrorBoundary from "@/helpers/common/components/ErrorBoundary";
+import { OutlinedButton } from "@/helpers/common/atoms/Buttons";
+import { headers } from "@/helpers/constants/editor-data";
+import { resetResumeStore } from "@/stores/useResumeStore";
 
 const EditorLayout = () => {
-  const [link, setLink] = useState('');
+  const [link, setLink] = useState("");
   const section = headers[link];
 
   const linkClickHandler = (link: string) => {
@@ -27,7 +27,9 @@ const EditorLayout = () => {
         {displayElement}
 
         <div className="mt-8">
-          <OutlinedButton onClick={resetResumeStore}>Reset all edits</OutlinedButton>
+          <OutlinedButton onClick={resetResumeStore}>
+            Reset all edits
+          </OutlinedButton>
         </div>
       </div>
     </ErrorBoundary>

@@ -1,6 +1,6 @@
-import { HTMLRenderer } from '@/helpers/common/components/HTMLRenderer';
-import { ProfileImage } from '@/helpers/common/components/ProfileImage';
-import styles from './about.module.css';
+import { HTMLRenderer } from "@/helpers/common/components/HTMLRenderer";
+import { ProfileImage } from "@/helpers/common/components/ProfileImage";
+import styles from "./about.module.css";
 
 export default function AboutMe({
   summary,
@@ -14,8 +14,8 @@ export default function AboutMe({
       {profileImage.length !== 0 && (
         <ProfileImage
           src={profileImage}
-          width={'80px'}
-          height={'80px'}
+          width={"80px"}
+          height={"80px"}
           imageWrapperClassname={`float-left mr-3 mb-1 ${styles.imageWrapShape}`}
         />
       )}

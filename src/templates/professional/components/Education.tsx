@@ -1,5 +1,5 @@
-import { IEducation } from '@/stores/index.interface';
-import { dateParser } from '@/helpers/utils';
+import { IEducation } from "@/stores/index.interface";
+import { dateParser } from "@/helpers/utils";
 
 export const Education = ({ education }: { education: IEducation[] }) => {
   return (
@@ -15,7 +15,7 @@ export const Education = ({ education }: { education: IEducation[] }) => {
                 <p>{item.institution}</p>
                 <p>
                   {`${dateParser(item.startDate)} - ${
-                    item.isStudyingHere ? 'present' : dateParser(item.endDate)
+                    item.isStudyingHere ? "present" : dateParser(item.endDate)
                   }`}
                 </p>
               </div>

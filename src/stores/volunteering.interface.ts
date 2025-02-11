@@ -18,5 +18,8 @@ export interface IVolunteeringStore {
   reset: (values: IVolunteeringItem[]) => void;
   onmoveup: (index: number) => void;
   onmovedown: (index: number) => void;
-  updatedVolunteeringExp: (index: number, updatedInfo: IVolunteeringItem) => void;
+  updatedVolunteeringExp: (
+    index: number,
+    updatedInfo: IVolunteeringItem,
+  ) => void;
 }

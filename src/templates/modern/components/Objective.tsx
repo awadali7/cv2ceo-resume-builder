@@ -1,11 +1,10 @@
-import { SectionHeading } from '../atoms/SectionHeading';
-import { SectionText } from '../atoms/SectionText';
-import { HTMLRenderer } from '@/helpers/common/components/HTMLRenderer';
+import { SectionText } from "../atoms/SectionText";
+import { HTMLRenderer } from "@/helpers/common/components/HTMLRenderer";
 
 export const Objective = ({ objective }: { objective: string }) => {
   return (
     <>
-      <SectionHeading title="Objective" />
+      <div className="relative mb-1 text-base font-medium ">SKILLS</div>
       <SectionText>
         <HTMLRenderer htmlString={objective} />
       </SectionText>

@@ -1,5 +1,5 @@
-import Head from 'next/head';
-import HomeLayout from '@/modules/home/HomeLayout';
+import Head from "next/head";
+import HomeLayout from "@/modules/home/HomeLayout";
 
 function HomePage() {
   return (

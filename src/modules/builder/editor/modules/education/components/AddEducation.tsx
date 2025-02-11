@@ -1,19 +1,19 @@
-import { useMemo } from 'react';
-import { OutlinedButton } from '@/helpers/common/atoms/Buttons';
-import { useEducations } from '@/stores/education';
-import { IEducationItem } from '@/stores/education.interface';
+import { useMemo } from "react";
+import { OutlinedButton } from "@/helpers/common/atoms/Buttons";
+import { useEducations } from "@/stores/education";
+import { IEducationItem } from "@/stores/education.interface";
 
 const NEW_EDUCATION: IEducationItem = {
-  institution: '',
-  url: '',
-  studyType: '',
-  area: '',
+  institution: "",
+  url: "",
+  studyType: "",
+  area: "",
   startDate: null,
   isStudyingHere: false,
   endDate: null,
-  score: '',
+  score: "",
   courses: [],
-  id: '',
+  id: "",
 };
 
 const AddEducation = ({
@@ -34,9 +34,9 @@ const AddEducation = ({
 
   const buttonCaption = useMemo(() => {
     if (isEmpty) {
-      return '+ Add an education';
+      return "+ Add an education";
     } else {
-      return '+ Add more';
+      return "+ Add more";
     }
   }, [isEmpty]);
 

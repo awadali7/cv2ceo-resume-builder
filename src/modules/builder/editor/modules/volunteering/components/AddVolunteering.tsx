@@ -1,17 +1,17 @@
-import { useMemo } from 'react';
-import { OutlinedButton } from '@/helpers/common/atoms/Buttons';
-import { useVoluteeringStore } from '@/stores/volunteering';
-import { IVolunteeringItem } from '@/stores/volunteering.interface';
+import { useMemo } from "react";
+import { OutlinedButton } from "@/helpers/common/atoms/Buttons";
+import { useVoluteeringStore } from "@/stores/volunteering";
+import { IVolunteeringItem } from "@/stores/volunteering.interface";
 
 const NEW_VOLUNTEER_EXP: IVolunteeringItem = {
-  organization: '',
-  position: '',
+  organization: "",
+  position: "",
   startDate: null,
   isVolunteeringNow: false,
   endDate: null,
-  summary: '',
-  id: '',
-  url: '',
+  summary: "",
+  id: "",
+  url: "",
   highlights: [],
 };
 
@@ -22,7 +22,9 @@ const AddVolunteeringExp = ({
   handleChange: (name: string, isExpanded: boolean) => void;
   isEmpty: boolean;
 }) => {
-  const addNewVolunteeringExperience = useVoluteeringStore((state) => state.add);
+  const addNewVolunteeringExperience = useVoluteeringStore(
+    (state) => state.add,
+  );
 
   const onCreateVolunteeringExperience = () => {
     const uniqueExpandedId = `${Math.random()}`;
@@ -33,9 +35,9 @@ const AddVolunteeringExp = ({
 
   const buttonCaption = useMemo(() => {
     if (isEmpty) {
-      return '+ Add a volunteering experience';
+      return "+ Add a volunteering experience";
     } else {
-      return '+ Add more';
+      return "+ Add more";
     }
   }, [isEmpty]);
 

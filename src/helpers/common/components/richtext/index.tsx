@@ -1,9 +1,9 @@
-import { useRef, useEffect, memo, useState } from 'react';
-import 'jodit/es2015/jodit.min.css';
+import { useRef, useEffect, memo, useState } from "react";
+import "jodit/es2015/jodit.min.css";
 
-import { LinkPlugin } from './plugins/link';
+import { LinkPlugin } from "./plugins/link";
 
-import styles from './jodit.module.css';
+import styles from "./jodit.module.css";
 
 interface IRichtext {
   label: string;
@@ -21,21 +21,24 @@ export const RichtextEditor = memo(({ label, onChange, value }: IRichtext) => {
   useEffect(() => {
     if (editorContainerRef.current) {
       const initEditor = async () => {
-        const { Jodit } = await import('jodit');
-        const editor = Jodit.make(editorContainerRef.current as HTMLTextAreaElement, {
-          showCharsCounter: false,
-          showWordsCounter: false,
-          showXPathInStatusbar: false,
-          buttons: ['bold', 'italic', 'link', 'ul', 'ol', 'undo', 'redo'],
-          disablePlugins:
-            'add-new-line,print,preview,table,table-keyboard-navigation,select-cells,resize-cells,file,video,media,image,image-processor,image-properties,xpath,tab,stat,search,powered-by-jodit,mobile,justify,inline-popup,indent,iframe,fullsize',
-          useSearch: false,
-          askBeforePasteHTML: false,
-          askBeforePasteFromWord: false,
-          defaultActionOnPaste: 'insert_only_text',
-          maxHeight: 200,
-          link: LinkPlugin,
-        });
+        const { Jodit } = await import("jodit");
+        const editor = Jodit.make(
+          editorContainerRef.current as HTMLTextAreaElement,
+          {
+            showCharsCounter: false,
+            showWordsCounter: false,
+            showXPathInStatusbar: false,
+            buttons: ["bold", "italic", "link", "ul", "ol", "undo", "redo"],
+            disablePlugins:
+              "add-new-line,print,preview,table,table-keyboard-navigation,select-cells,resize-cells,file,video,media,image,image-processor,image-properties,xpath,tab,stat,search,powered-by-jodit,mobile,justify,inline-popup,indent,iframe,fullsize",
+            useSearch: false,
+            askBeforePasteHTML: false,
+            askBeforePasteFromWord: false,
+            defaultActionOnPaste: "insert_only_text",
+            maxHeight: 200,
+            link: LinkPlugin,
+          },
+        );
         editor.value = value;
         editorRef.current = editor;
         setEditorInstanceCreated(true);
@@ -53,7 +56,7 @@ export const RichtextEditor = memo(({ label, onChange, value }: IRichtext) => {
 
   useEffect(() => {
     if (editorRef.current && editorInstanceCreated) {
-      editorRef.current.events.on('change', onChange);
+      editorRef.current.events.on("change", onChange);
     }
   }, [onChange, editorInstanceCreated]);
 
@@ -61,7 +64,7 @@ export const RichtextEditor = memo(({ label, onChange, value }: IRichtext) => {
     <div className={`${styles.editor_wrapper} mb-4`}>
       <div
         style={{
-          padding: '8px 16px 0px',
+          padding: "8px 16px 0px",
         }}
         className="text-resume-800 text-xs mb-1"
       >
@@ -75,4 +78,4 @@ export const RichtextEditor = memo(({ label, onChange, value }: IRichtext) => {
   );
 });
 
-RichtextEditor.displayName = 'RichtextEditor';
+RichtextEditor.displayName = "RichtextEditor";

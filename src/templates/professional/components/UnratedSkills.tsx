@@ -1,5 +1,5 @@
-import { ISkillItem } from '@/stores/skill.interface';
-import styled from '@emotion/styled';
+import { ISkillItem } from "@/stores/skill.interface";
+import styled from "@emotion/styled";
 
 const Badge = styled.span`
   border: 1px solid ${(props) => props.theme.highlighterColor};

@@ -1,14 +1,14 @@
-import { ISkillItem } from '@/stores/skill.interface';
-import AddSkill from './AddSkill';
-import SkillPill from '../atoms/SkillPill';
-import DragContainer from '@/helpers/common/components/DragContainer';
-import { motion, AnimatePresence } from 'framer-motion';
-import EditSkill from './EditSkill';
-import { useState } from 'react';
+import { ISkillItem } from "@/stores/skill.interface";
+import AddSkill from "./AddSkill";
+import SkillPill from "../atoms/SkillPill";
+import DragContainer from "@/helpers/common/components/DragContainer";
+import { motion, AnimatePresence } from "framer-motion";
+import EditSkill from "./EditSkill";
+import { useState } from "react";
 
 const animation = {
-  initial: { height: '1px' },
-  animate: { height: '100%' },
+  initial: { height: "1px" },
+  animate: { height: "100%" },
 };
 
 export default function Skill({
@@ -21,7 +21,15 @@ export default function Skill({
 }: {
   items: ISkillItem[];
   addItem: ({ name, level }: ISkillItem) => void;
-  editItem: ({ name, level, index }: { name: string; level: number; index: number }) => void;
+  editItem: ({
+    name,
+    level,
+    index,
+  }: {
+    name: string;
+    level: number;
+    index: number;
+  }) => void;
   removeItem: (index: number) => void;
   setItems: (name: ISkillItem[]) => void;
   hasLevel: boolean;
@@ -49,7 +57,11 @@ export default function Skill({
                 level={item.level}
                 onDelete={removeItem}
                 showLevel={hasLevel}
-                onEdit={(data: { name: string; level: number; index: number }) => {
+                onEdit={(data: {
+                  name: string;
+                  level: number;
+                  index: number;
+                }) => {
                   setEditMode(true);
                   setSelectedSkill(data);
                 }}

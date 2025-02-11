@@ -1,15 +1,19 @@
-import { HTMLRenderer } from '@/helpers/common/components/HTMLRenderer';
-import { IAwards } from '@/stores/index.interface';
-import { SectionHeading } from '../atoms/SectionHeading';
-import { SectionList } from '../atoms/SectionList';
-import { SectionSubtitle } from '../atoms/SectionSubtitle';
-import { SectionTitle } from '../atoms/SectionTitle';
-import { dateParser } from '@/helpers/utils';
-import { useRef } from 'react';
-import { useAwards } from '../../../stores/awards';
-import { scrollToElement } from '../../../helpers/utils/index';
+import { HTMLRenderer } from "@/helpers/common/components/HTMLRenderer";
+import { IAwards } from "@/stores/index.interface";
+import { SectionHeading } from "../atoms/SectionHeading";
+import { SectionList } from "../atoms/SectionList";
+import { SectionSubtitle } from "../atoms/SectionSubtitle";
+import { SectionTitle } from "../atoms/SectionTitle";
+import { dateParser } from "@/helpers/utils";
+import { useRef } from "react";
+import { useAwards } from "../../../stores/awards";
+import { scrollToElement } from "../../../helpers/utils/index";
 
-export const AwardSection = ({ awardsReceived }: { awardsReceived: IAwards[] }) => {
+export const AwardSection = ({
+  awardsReceived,
+}: {
+  awardsReceived: IAwards[];
+}) => {
   const awardsRef = useRef<null | HTMLDivElement>(null);
   useAwards.subscribe(() => {
     scrollToElement(awardsRef);

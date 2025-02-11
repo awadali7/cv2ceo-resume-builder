@@ -1,10 +1,10 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 const animation = {
   exit: {
-    height: '0',
+    height: "0",
     paddingTop: 0,
     paddingBottom: 0,
     opacity: 0,
@@ -44,7 +44,7 @@ const EditSectionContainer = ({
       >
         <span>{title}</span>
         <Image
-          src={isEnabled ? '/icons/eye.svg' : '/icons/eye-slash.svg'}
+          src={isEnabled ? "/icons/eye.svg" : "/icons/eye-slash.svg"}
           alt="eye"
           height="16"
           width="21"

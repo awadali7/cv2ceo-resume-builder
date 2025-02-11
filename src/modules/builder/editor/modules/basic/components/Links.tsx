@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
+import React, { ChangeEvent, Fragment, useEffect, useState } from "react";
+import TextField from "@mui/material/TextField";
 
 const SUPPORTED_NETWORKS = {
-  linkedin: 'linkedin',
-  twitter: 'twitter',
-  github: 'github',
-  hackerrank: 'hackerrank',
-  hackerearth: 'hackerearth',
-  codechef: 'codechef',
-  leetcode: 'leetcode',
-  cssbattle: 'cssbattle',
+  linkedin: "linkedin",
+  twitter: "twitter",
+  github: "github",
+  hackerrank: "hackerrank",
+  hackerearth: "hackerearth",
+  codechef: "codechef",
+  leetcode: "leetcode",
+  cssbattle: "cssbattle",
 };
 
 interface IProfileNetwork {
@@ -25,44 +25,44 @@ interface ISupportedNtwkDefaultState {
 
 const SUPPORTED_NETWORK_DEFAULT_STATE: ISupportedNtwkDefaultState = {
   linkedin: {
-    network: 'linkedin',
-    username: 'janedoe',
-    url: '',
+    network: "linkedin",
+    username: "janedoe",
+    url: "",
   },
   twitter: {
-    network: 'twitter',
-    username: 'janedoe',
-    url: '',
+    network: "twitter",
+    username: "janedoe",
+    url: "",
   },
   github: {
-    network: 'github',
-    username: 'janedoe',
-    url: '',
+    network: "github",
+    username: "janedoe",
+    url: "",
   },
   hackerrank: {
-    network: 'hackerrank',
-    username: 'janedoe',
-    url: '',
+    network: "hackerrank",
+    username: "janedoe",
+    url: "",
   },
   hackerearth: {
-    network: 'hackerearth',
-    username: 'janedoe',
-    url: '',
+    network: "hackerearth",
+    username: "janedoe",
+    url: "",
   },
   codechef: {
-    network: 'codechef',
-    username: 'janedoe',
-    url: '',
+    network: "codechef",
+    username: "janedoe",
+    url: "",
   },
   leetcode: {
-    network: 'leetcode',
-    username: 'janedoe',
-    url: '',
+    network: "leetcode",
+    username: "janedoe",
+    url: "",
   },
   cssbattle: {
-    network: 'cssbattle',
-    username: 'janedoe',
-    url: '',
+    network: "cssbattle",
+    username: "janedoe",
+    url: "",
   },
 };
 
@@ -79,22 +79,24 @@ const Links = ({
     const defaultNetworks = { ...SUPPORTED_NETWORK_DEFAULT_STATE };
     Object.keys(SUPPORTED_NETWORKS).forEach((ntwk) => {
       const matchedNetwork = basicTabs.profiles.find(
-        (profile: IProfileNetwork) => profile.network === ntwk
+        (profile: IProfileNetwork) => profile.network === ntwk,
       );
       if (matchedNetwork) {
         defaultNetworks[ntwk] = matchedNetwork;
       }
     });
     setNetworks(defaultNetworks);
-    onChangeHandler(Object.values(defaultNetworks), 'profiles');
+    onChangeHandler(Object.values(defaultNetworks), "profiles");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onURLChange = (value: string, network: string) => {
     const profiles = basicTabs.profiles;
-    const matchedNetwork = profiles.find((profile: IProfileNetwork) => profile.network === network);
+    const matchedNetwork = profiles.find(
+      (profile: IProfileNetwork) => profile.network === network,
+    );
     matchedNetwork.url = value;
-    onChangeHandler(profiles, 'profiles');
+    onChangeHandler(profiles, "profiles");
   };
 
   return (
