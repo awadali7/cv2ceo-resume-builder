@@ -25,10 +25,7 @@ export const EducationSection = ({
         return (
           <div key={index} className="py-2">
             <div>
-              <SectionTitle
-                label={`${item.studyType} - ${item.area}`}
-                textSize="md"
-              />
+              <SectionTitle label={`${item.studyType} `} textSize="md" />
               <div className="">
                 <SectionSubtitle label={item.institution} />
                 <div className="flex gap-3">

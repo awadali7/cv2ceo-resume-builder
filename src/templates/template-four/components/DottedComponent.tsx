@@ -10,7 +10,7 @@ export const DottedComponent = ({
 }) => {
   return (
     <>
-      <div className="relative mb-1 text-base font-medium ">{heading}</div>
+      <div className="relative  text-base font-medium ">{heading}</div>
       <SectionText>
         <HTMLRenderer htmlString={content} />
       </SectionText>

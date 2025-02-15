@@ -2,7 +2,6 @@
 import React, { Fragment } from "react";
 import Box from "@mui/material/Box";
 import Contacts from "./Contacts";
-import Links from "./Links";
 import About from "./About";
 
 const BasicPanel = ({
@@ -39,13 +38,13 @@ const BasicPanel = ({
             onChangeHandler={onChangeHandler}
           ></Contacts>
         )}
-        {activeTab == 1 && (
+        {/* {activeTab == 1 && (
           <Links
             basicTabs={basicTabs}
             onChangeHandler={onChangeHandler}
           ></Links>
-        )}
-        {activeTab == 2 && (
+        )} */}
+        {activeTab == 1 && (
           <About
             basicTabs={basicTabs}
             onChangeHandler={onChangeHandler}

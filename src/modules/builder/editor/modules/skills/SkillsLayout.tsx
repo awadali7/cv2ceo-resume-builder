@@ -1,26 +1,14 @@
 import { useState } from "react";
 import {
-  useDatabases,
-  useFrameworks,
+  useSoftSkills,
+  useTechnicalSkills,
   useLanguages,
-  useLibraries,
-  usePractices,
-  useTechnologies,
-  useTools,
 } from "@/stores/skills";
 import EditSectionContainer from "@/helpers/common/components/EditSectionContainer";
 import Skill from "./components/Skill";
 
 const SkillsLayout = () => {
-  const skillState = [
-    useLanguages(),
-    useFrameworks(),
-    useTechnologies(),
-    useLibraries(),
-    useDatabases(),
-    usePractices(),
-    useTools(),
-  ];
+  const skillState = [useLanguages(), useSoftSkills(), useTechnicalSkills()];
 
   const [expanded, setExpanded] = useState<string | false>("Languages");
 

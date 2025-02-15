@@ -3,8 +3,7 @@ import SkillsLayout from "@/modules/builder/editor/modules/skills/SkillsLayout";
 import EducationLayout from "@/modules/builder/editor/modules/education/EducationLayout";
 import ExperienceLayout from "@/modules/builder/editor/modules/experience/ExperienceLayout";
 import ActivitiesLayout from "@/modules/builder/editor/modules/activities/ActivitiesLayout";
-import VolunteeringLayout from "@/modules/builder/editor/modules/volunteering/VolunteeringLayout";
-import AwardsLayout from "@/modules/builder/editor/modules/awards/AwardsLayout";
+import CertificateLayout from "@/modules/builder/editor/modules/awards/CertificateLayout";
 
 export const headers: {
   [key: string]: { title: string; component: () => JSX.Element };
@@ -16,7 +15,10 @@ export const headers: {
   },
   education: { title: "Education", component: EducationLayout },
   experience: { title: "Experience", component: ExperienceLayout },
-  activities: { title: "Activities", component: ActivitiesLayout },
-  volunteering: { title: "Volunteering", component: VolunteeringLayout },
-  awards: { title: "Awards", component: AwardsLayout },
+  activities: {
+    title: "Achievements & Extra-Curricular Activities",
+    component: ActivitiesLayout,
+  },
+  // volunteering: { title: "Volunteering", component: VolunteeringLayout },
+  certificates: { title: "Certificate", component: CertificateLayout },
 };

@@ -24,7 +24,7 @@ export default function ModernTemplate() {
   const basics = resumeData?.basics || {};
   const skills = resumeData?.skills || {};
   const work = resumeData?.work || [];
-  const awards = resumeData?.awards || [];
+  const certificates = resumeData?.certificates || [];
   const education = resumeData?.education || [];
   const volunteer = resumeData?.volunteer || [];
 
@@ -85,8 +85,8 @@ export default function ModernTemplate() {
             <WorkSection experience={work} />
           </SectionValidator>
 
-          <SectionValidator value={awards}>
-            <AwardSection awardsReceived={awards} />
+          <SectionValidator value={certificates}>
+            <AwardSection certificatesReceived={certificates} />
           </SectionValidator>
         </div>
       </div>

@@ -44,7 +44,7 @@ const MoveEditSection = ({
           className="w-[15rem] overflow-hidden text-ellipsis whitespace-nowrap"
           title={title}
         >
-          {title}
+          {title}ewtwex
         </span>
         <div className="flex gap-3">
           {length > 1 && (

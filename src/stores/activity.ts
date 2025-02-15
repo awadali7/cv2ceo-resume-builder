@@ -5,7 +5,7 @@ import resumeData from "@/helpers/constants/resume-data.json";
 import { IActivityStore, IActivity } from "./activity.interface";
 import { SetState } from "./store.interface";
 
-const setAllAwards =
+const setAllcertificates =
   (set: SetState<IActivityStore>) => (activityItem: IActivity) => {
     set({
       activities: activityItem,
@@ -36,7 +36,7 @@ export const useActivity = create<IActivityStore>()(
       activities: resumeData.activities,
 
       get: () => get().activities,
-      reset: setAllAwards(set),
+      reset: setAllcertificates(set),
       updateAchievements: updateAchievements(set),
       updateInvolvements: updateInvolvements(set),
     }),

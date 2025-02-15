@@ -3,12 +3,8 @@ import { SectionHeading } from "../atoms/SectionHeading";
 import { useRef } from "react";
 import {
   useLanguages,
-  useFrameworks,
-  useLibraries,
-  usePractices,
-  useDatabases,
-  useTechnologies,
-  useTools,
+  useTechnicalSkills,
+  useSoftSkills,
 } from "../../../stores/skills";
 import { scrollToElement } from "../../../helpers/utils/index";
 
@@ -23,22 +19,10 @@ export const SkillsSection = ({
   useLanguages.subscribe(() => {
     scrollToElement(skillRef);
   });
-  useFrameworks.subscribe(() => {
+  useTechnicalSkills.subscribe(() => {
     scrollToElement(skillRef);
   });
-  useLibraries.subscribe(() => {
-    scrollToElement(skillRef);
-  });
-  usePractices.subscribe(() => {
-    scrollToElement(skillRef);
-  });
-  useDatabases.subscribe(() => {
-    scrollToElement(skillRef);
-  });
-  useTechnologies.subscribe(() => {
-    scrollToElement(skillRef);
-  });
-  useTools.subscribe(() => {
+  useSoftSkills.subscribe(() => {
     scrollToElement(skillRef);
   });
 

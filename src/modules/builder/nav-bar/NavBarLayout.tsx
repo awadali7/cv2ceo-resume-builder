@@ -1,13 +1,9 @@
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { NavBarActions, NavBarMenu, StyledButton } from "./atoms";
 import {
-  useDatabases,
-  useFrameworks,
+  useSoftSkills,
   useLanguages,
-  useLibraries,
-  usePractices,
-  useTechnologies,
-  useTools,
+  useTechnicalSkills,
 } from "@/stores/skills";
 
 import { AVAILABLE_TEMPLATES } from "@/helpers/constants";
@@ -21,7 +17,7 @@ import { ThemeSelect } from "./components/ThemeSelect";
 import { Toast } from "@/helpers/common/atoms/Toast";
 import exportFromJSON from "export-from-json";
 import { useActivity } from "@/stores/activity";
-import { useAwards } from "@/stores/awards";
+import { useCertificates } from "@/stores/certificate";
 import { useBasicDetails } from "@/stores/basic";
 import { useEducations } from "@/stores/education";
 import { useExperiences } from "@/stores/experience";
@@ -42,16 +38,12 @@ const NavBarLayout = () => {
       },
       work: useExperiences.getState().experiences,
       education: useEducations.getState().academics,
-      awards: useAwards.getState().awards,
+      certificates: useCertificates.getState().certificates,
       volunteer: useVoluteeringStore.getState().volunteeredExps,
       skills: {
         languages: useLanguages.getState().get(),
-        frameworks: useFrameworks.getState().get(),
-        technologies: useTechnologies.getState().get(),
-        libraries: useLibraries.getState().get(),
-        databases: useDatabases.getState().get(),
-        practices: usePractices.getState().get(),
-        tools: useTools.getState().get(),
+        softSkills: useSoftSkills.getState().get(),
+        technicalSkills: useTechnicalSkills.getState().get(),
       },
       activities: useActivity.getState().activities,
     };
@@ -91,29 +83,21 @@ const NavBarLayout = () => {
               achievements: "",
             },
             volunteer = [],
-            awards = [],
+            certificates = [],
           } = uploadedResumeJSON;
           const {
             languages = [],
-            frameworks = [],
-            libraries = [],
-            databases = [],
-            technologies = [],
-            practices = [],
-            tools = [],
+            technicalSkills = [],
+            softSkills = [],
           } = skills;
           useBasicDetails.getState().reset(basics);
           useLanguages.getState().reset(languages);
-          useFrameworks.getState().reset(frameworks);
-          useLibraries.getState().reset(libraries);
-          useDatabases.getState().reset(databases);
-          useTechnologies.getState().reset(technologies);
-          usePractices.getState().reset(practices);
-          useTools.getState().reset(tools);
+          useTechnicalSkills.getState().reset(technicalSkills);
+          useSoftSkills.getState().reset(softSkills);
           useExperiences.getState().reset(work);
           useEducations.getState().reset(education);
           useVoluteeringStore.getState().reset(volunteer);
-          useAwards.getState().reset(awards);
+          useCertificates.getState().reset(certificates);
           useActivity.getState().reset(activities);
           setOpenToast(true);
         }

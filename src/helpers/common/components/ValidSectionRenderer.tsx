@@ -1,7 +1,7 @@
 import { Fragment, ReactNode, useMemo } from "react";
 import { IExperienceItem } from "@/stores/experience.interface";
 import { IEducationItem } from "@/stores/education.interface";
-import { IAwardItem } from "@/stores/awards.interface";
+import { ICertificateItem } from "@/stores/certificate.interface";
 import { IVolunteeringItem } from "@/stores/volunteering.interface";
 import { ISkillItem } from "@/stores/skill.interface";
 
@@ -13,7 +13,7 @@ export const SectionValidator = ({
     | string
     | IExperienceItem[]
     | IEducationItem[]
-    | IAwardItem[]
+    | ICertificateItem[]
     | IVolunteeringItem[]
     | ISkillItem[];
   children: ReactNode;

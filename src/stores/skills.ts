@@ -65,86 +65,30 @@ export const useLanguages = create<ISkillState>()(
   ),
 );
 
-export const useFrameworks = create<ISkillState>()(
+export const useTechnicalSkills = create<ISkillState>()(
   persist(
     (set, get) => ({
-      title: "Frameworks",
+      title: "Technical Skills",
       hasLevel: true,
-      values: resumeData.skills.frameworks,
+      values: resumeData.skills.technicalSkills,
       isEnabled: true,
 
       ...getMethods(set, get),
     }),
-    { name: "frameworks" },
+    { name: "technicalSkills" },
   ),
 );
 
-export const useTechnologies = create<ISkillState>()(
+export const useSoftSkills = create<ISkillState>()(
   persist(
     (set, get) => ({
-      title: "Technologies",
+      title: "Soft Skills",
       hasLevel: false,
-      values: resumeData.skills.technologies,
+      values: resumeData.skills.softSkills,
       isEnabled: true,
 
       ...getMethods(set, get),
     }),
-    { name: "technologies" },
-  ),
-);
-
-export const useLibraries = create<ISkillState>()(
-  persist(
-    (set, get) => ({
-      title: "Libraries",
-      hasLevel: false,
-      values: resumeData.skills.libraries,
-      isEnabled: true,
-
-      ...getMethods(set, get),
-    }),
-    { name: "libraries" },
-  ),
-);
-
-export const useDatabases = create<ISkillState>()(
-  persist(
-    (set, get) => ({
-      title: "Databases",
-      hasLevel: false,
-      values: resumeData.skills.databases,
-      isEnabled: true,
-
-      ...getMethods(set, get),
-    }),
-    { name: "databases" },
-  ),
-);
-
-export const usePractices = create<ISkillState>()(
-  persist(
-    (set, get) => ({
-      title: "Practices",
-      hasLevel: false,
-      values: resumeData.skills.practices,
-      isEnabled: true,
-
-      ...getMethods(set, get),
-    }),
-    { name: "practices" },
-  ),
-);
-
-export const useTools = create<ISkillState>()(
-  persist(
-    (set, get) => ({
-      title: "Tools",
-      hasLevel: false,
-      values: resumeData.skills.tools,
-      isEnabled: true,
-
-      ...getMethods(set, get),
-    }),
-    { name: "tools" },
+    { name: "softSkills" },
   ),
 );

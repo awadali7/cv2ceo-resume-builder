@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { ChangeEvent, Fragment } from "react";
 import TextField from "@mui/material/TextField";
+import ImageUploader from "@/helpers/common/components/ImageUploader";
 
 const Contacts = ({
   basicTabs,
@@ -19,14 +20,9 @@ const Contacts = ({
           onChangeHandler(event.target.value, "name");
         }}
       />
-      <TextField
-        label="Image URL"
-        variant="filled"
-        value={basicTabs.image}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, "image");
-        }}
-      />
+
+      <ImageUploader onChangeHandler={onChangeHandler} />
+
       <TextField
         label="Title"
         variant="filled"
@@ -44,14 +40,6 @@ const Contacts = ({
         }}
       />
       <TextField
-        label="Website URL"
-        variant="filled"
-        value={basicTabs.url}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, "url");
-        }}
-      />
-      <TextField
         label="Phone"
         variant="filled"
         value={basicTabs.phone}
@@ -64,25 +52,8 @@ const Contacts = ({
         variant="filled"
         value={basicTabs.location.city}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          const location = basicTabs.location;
-          location.city = event.target.value;
+          const location = { ...basicTabs.location, city: event.target.value };
           onChangeHandler(location, "location");
-        }}
-      />
-      <TextField
-        label="Relevant Experience"
-        variant="filled"
-        value={basicTabs.relExp}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, "relExp");
-        }}
-      />
-      <TextField
-        label="Total Experience"
-        variant="filled"
-        value={basicTabs.totalExp}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          onChangeHandler(event.target.value, "totalExp");
         }}
       />
     </Fragment>

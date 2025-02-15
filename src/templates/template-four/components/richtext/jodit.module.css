@@ -65,10 +65,6 @@
   list-style-type: disc;
 }
 
-.editor_wrapper :global(.jodit-wysiwyg ul li) {
-  margin-bottom: 5px;
-}
-
 .editor_wrapper :global(.jodit-wysiwyg a) {
   text-decoration: underline;
   color: #007bff;
@@ -167,9 +163,6 @@
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   padding-inline-start: 20px;
-}
-.richtextRuntimeWrapper ul {
-  margin-bottom: 10px;
 }
 
 .richtextRuntimeWrapper ul {

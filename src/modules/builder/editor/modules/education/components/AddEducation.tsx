@@ -7,11 +7,9 @@ const NEW_EDUCATION: IEducationItem = {
   institution: "",
   url: "",
   studyType: "",
-  area: "",
   startDate: null,
   isStudyingHere: false,
   endDate: null,
-  score: "",
   courses: [],
   id: "",
 };

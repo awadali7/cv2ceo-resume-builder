@@ -10,13 +10,11 @@ const addEducation =
   ({
     institution,
     studyType,
-    area,
     startDate,
     isStudyingHere,
     endDate,
     id,
     url,
-    score,
     courses,
   }: IEducationItem) =>
     set(
@@ -24,14 +22,12 @@ const addEducation =
         state.academics.push({
           institution,
           studyType,
-          area,
           startDate,
           isStudyingHere,
           endDate,
           id,
           url,
           courses,
-          score,
         });
       }),
     );

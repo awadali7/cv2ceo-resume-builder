@@ -2,7 +2,7 @@ import { BasicIntro } from "./components/BasicIntro";
 import { EducationSection } from "./components/Education";
 import { VolunteerSection } from "./components/Volunteer";
 import { Objective } from "./components/Objective";
-import { SkillsSection } from "./components/Skills";
+// import { SkillsSection } from "./components/Skills";
 import { SummarySection } from "./components/Summary";
 import { WorkSection } from "./components/Work";
 import { AwardSection } from "./components/Awards";
@@ -15,9 +15,8 @@ export default function ModernTemplate() {
 
   // Provide sensible defaults to avoid runtime errors.
   const basics = resumeData?.basics || {};
-  const skills = resumeData?.skills || {};
   const work = resumeData?.work || [];
-  const awards = resumeData?.awards || [];
+  const certificates = resumeData?.certificates || [];
   const education = resumeData?.education || [];
   const volunteer = resumeData?.volunteer || [];
 
@@ -43,8 +42,8 @@ export default function ModernTemplate() {
             <WorkSection experience={work} />
           </SectionValidator>
 
-          <SectionValidator value={awards}>
-            <AwardSection awardsReceived={awards} />
+          <SectionValidator value={certificates}>
+            <AwardSection certificatesReceived={certificates} />
           </SectionValidator>
         </div>
 
@@ -53,27 +52,27 @@ export default function ModernTemplate() {
             <Objective objective={basics.objective || ""} />
           </SectionValidator>
 
-          <SectionValidator value={skills.languages}>
+          {/* <SectionValidator value={skills.languages}>
             <SkillsSection title="Languages" list={skills.languages || []} />
-          </SectionValidator>
+          </SectionValidator> */}
 
-          <SectionValidator value={skills.technologies}>
+          {/* <SectionValidator value={skills.technologies}>
             <SkillsSection
               title="Technologies"
               list={skills.technologies || []}
             />
-          </SectionValidator>
+          </SectionValidator> */}
 
-          <SectionValidator value={skills.frameworks}>
+          {/* <SectionValidator value={skills.frameworks}>
             <SkillsSection
               title="Frameworks & Libraries"
               list={(skills.frameworks || []).concat(skills.libraries || [])}
             />
-          </SectionValidator>
+          </SectionValidator> */}
 
-          <SectionValidator value={skills.tools}>
+          {/* <SectionValidator value={skills.tools}>
             <SkillsSection title="Tools" list={skills.tools || []} />
-          </SectionValidator>
+          </SectionValidator> */}
 
           <SectionValidator value={education}>
             <EducationSection education={education} />

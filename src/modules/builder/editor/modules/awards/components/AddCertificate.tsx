@@ -1,35 +1,35 @@
 import { useMemo } from "react";
 import { OutlinedButton } from "@/helpers/common/atoms/Buttons";
-import { useAwards } from "@/stores/awards";
-import { IAwardItem } from "@/stores/awards.interface";
+import { useCertificates } from "@/stores/certificate";
+import { ICertificateItem } from "@/stores/certificate.interface";
 
-const NEW_AWARD: IAwardItem = {
+const NEW_CERTIFICATE: ICertificateItem = {
   title: "",
-  awarder: "",
+  certificater: "",
   date: null,
   summary: "",
   id: "",
 };
 
-const AddAward = ({
+const AddCertificate = ({
   handleChange,
   isEmpty,
 }: {
   handleChange: (name: string, isExpanded: boolean) => void;
   isEmpty: boolean;
 }) => {
-  const addAwardToStore = useAwards((state) => state.add);
+  const addCertificateToStore = useCertificates((state) => state.add);
 
   const onCreateEducation = () => {
     const uniqueExpandedId = `${Math.random()}`;
-    NEW_AWARD.id = uniqueExpandedId;
-    addAwardToStore(NEW_AWARD);
+    NEW_CERTIFICATE.id = uniqueExpandedId;
+    addCertificateToStore(NEW_CERTIFICATE);
     handleChange(uniqueExpandedId, true);
   };
 
   const buttonCaption = useMemo(() => {
     if (isEmpty) {
-      return "+ Add an award";
+      return "+ Add an certificate";
     } else {
       return "+ Add more";
     }
@@ -44,4 +44,4 @@ const AddAward = ({
   );
 };
 
-export default AddAward;
+export default AddCertificate;

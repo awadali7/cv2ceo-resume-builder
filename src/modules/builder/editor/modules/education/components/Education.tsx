@@ -27,12 +27,6 @@ const Education: React.FC<IEducationProps> = ({
         case "degree":
           currentExpInfo.studyType = value;
           break;
-        case "area":
-          currentExpInfo.area = value;
-          break;
-        case "grade":
-          currentExpInfo.score = value;
-          break;
         case "startDate":
           if (value?.isValid()) {
             currentExpInfo.startDate = value;
@@ -78,32 +72,6 @@ const Education: React.FC<IEducationProps> = ({
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
           onChangeHandler("degree", value);
-        }}
-        autoComplete="off"
-        fullWidth
-        required
-        sx={{ marginBottom: "26px" }}
-      />
-      <TextField
-        label="Area"
-        variant="filled"
-        value={educationInfo.area}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          const value = e.target.value;
-          onChangeHandler("area", value);
-        }}
-        autoComplete="off"
-        fullWidth
-        required
-        sx={{ marginBottom: "26px" }}
-      />
-      <TextField
-        label="Grade"
-        variant="filled"
-        value={educationInfo.score}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          const value = e.target.value;
-          onChangeHandler("grade", value);
         }}
         autoComplete="off"
         fullWidth

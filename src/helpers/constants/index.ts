@@ -26,6 +26,17 @@ export const SYSTEM_COLORS: IThemeColor[] = [
 ];
 
 export const AVAILABLE_TEMPLATES: ITemplate = {
+  tempfour: {
+    id: "tempfour",
+    name: "tempfour Resume",
+    thumbnail: "/templates/tempfour.png",
+    component: dynamic(
+      () => import("@/templates/template-four/ForthTemplate"),
+      {
+        ssr: false,
+      },
+    ),
+  },
   modern: {
     id: "modern",
     name: "Modern Resume",
@@ -45,28 +56,17 @@ export const AVAILABLE_TEMPLATES: ITemplate = {
       },
     ),
   },
-  uniquemodal: {
-    id: "uniquemodal",
-    name: "uniquemodal Resume",
-    thumbnail: "/templates/professional.png",
-    component: dynamic(
-      () => import("@/templates/uniquemodal/UniquemodalTemplate"),
-      {
-        ssr: false,
-      },
-    ),
-  },
-  tempfour: {
-    id: "tempfour",
-    name: "tempfour Resume",
-    thumbnail: "/templates/tempfour.png",
-    component: dynamic(
-      () => import("@/templates/template-four/ForthTemplate"),
-      {
-        ssr: false,
-      },
-    ),
-  },
+  // uniquemodal: {
+  //   id: "uniquemodal",
+  //   name: "uniquemodal Resume",
+  //   thumbnail: "/templates/professional.png",
+  //   component: dynamic(
+  //     () => import("@/templates/uniquemodal/UniquemodalTemplate"),
+  //     {
+  //       ssr: false,
+  //     },
+  //   ),
+  // },
 };
 
 export const CUSTOM_THEME_COLOR: IThemeColor = {

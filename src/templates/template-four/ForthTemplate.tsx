@@ -8,45 +8,39 @@
 import { useContext } from "react";
 import { StateContext } from "@/modules/builder/resume/ResumeLayout";
 import { SectionValidator } from "@/helpers/common/components/ValidSectionRenderer";
-import { SummarySection } from "../modern/components/Summary";
-import { WorkSection } from "../modern/components/Work";
-import { AwardSection } from "../modern/components/Awards";
-import { EducationSection } from "../modern/components/Education";
-import { VolunteerSection } from "../modern/components/Volunteer";
-
 import { DottedComponent } from "./components/DottedComponent";
 import { DottedSkills } from "./components/DottedSkills";
+import { ObjectiveSection } from "./components/ObjectiveSection";
+import { WorkSection } from "./components/Work";
+import { EducationSection } from "./components/Education";
+import { CertificateSection } from "./components/Certificate";
+import { AchievementSection } from "./components/Achievements";
+import Image from "next/image";
 
 export default function ForthTemplate() {
   const resumeData = useContext(StateContext);
+
+  console.log(resumeData, "resumeData ======>");
 
   // Provide sensible defaults to avoid runtime errors.
   const basics = resumeData?.basics || {};
   const skills = resumeData?.skills || {};
   const work = resumeData?.work || [];
-  const awards = resumeData?.awards || [];
+  const certificates = resumeData?.certificates || [];
   const education = resumeData?.education || [];
-  const volunteer = resumeData?.volunteer || [];
+  const activities = resumeData?.activities || [];
 
   return (
     <div className="">
-      {/* <BasicIntro
-                name={basics.name || ""}
-                label={basics.label || ""}
-                url={basics.url || ""}
-                email={basics.email || ""}
-                city={basics.location?.city || ""}
-                phone={basics.phone || ""}
-                image={basics.image || ""}
-                profiles={basics.profiles || []}
-            /> */}
       <div className="flex">
-        <div className="basis-[30%] bg-[#D7D7D7] h-full ">
+        <div className="basis-[30%] bg-[#D7D7D7] h-[296mm] ">
           <SectionValidator value={basics.image}>
-            <img
+            <Image
               src={basics.image || ""}
               alt={basics.name || ""}
-              className="w-full"
+              width={1000}
+              height={1000}
+              className="w-full h-[250px]"
             />
           </SectionValidator>
           <div className="px-6 py-2">
@@ -74,41 +68,49 @@ export default function ForthTemplate() {
               </div>
             </SectionValidator>
 
-            <SectionValidator value={basics?.summary}>
+            <SectionValidator value={skills?.languages}>
               <div className="mt-3">
-                <DottedSkills content={skills || ""} heading="SKILLS" />
+                <DottedSkills
+                  content={skills?.languages || ""}
+                  heading="LANGUAGES"
+                />
               </div>
             </SectionValidator>
 
-            {/* <SectionValidator value={skills.frameworks}>
-                            <SkillsSection
-                                title="Frameworks & Libraries"
-                                list={(skills.frameworks || []).concat(
-                                    skills.libraries || []
-                                )}
-                            />
-                        </SectionValidator> */}
-
-            <SectionValidator value={education}>
-              <EducationSection education={education} />
+            <SectionValidator value={skills?.softSkills}>
+              <div className="mt-3">
+                <DottedSkills
+                  content={skills?.softSkills || ""}
+                  heading="SOFT SKILLS"
+                />
+              </div>
             </SectionValidator>
 
-            <SectionValidator value={volunteer}>
-              <VolunteerSection volunteer={volunteer} />
+            <SectionValidator value={skills?.technicalSkills}>
+              <div className="mt-3">
+                <DottedSkills
+                  content={skills?.technicalSkills || ""}
+                  heading="TECHNICAL SKILLS"
+                />
+              </div>
             </SectionValidator>
           </div>
         </div>
-        <div className="basis-[70%] p-3">
-          <SectionValidator value={basics.summary}>
-            <SummarySection summary={basics.summary || ""} />
+        <div className="basis-[70%] p-6">
+          <SectionValidator value={basics.objective}>
+            <ObjectiveSection objective={basics.objective || ""} />
           </SectionValidator>
-
           <SectionValidator value={work}>
             <WorkSection experience={work} />
           </SectionValidator>
-
-          <SectionValidator value={awards}>
-            <AwardSection awardsReceived={awards} />
+          <SectionValidator value={education}>
+            <EducationSection experience={education} />
+          </SectionValidator>
+          <SectionValidator value={certificates}>
+            <CertificateSection certificatesReceived={certificates} />
+          </SectionValidator>
+          <SectionValidator value={activities?.achievements}>
+            <AchievementSection achievements={activities?.achievements} />
           </SectionValidator>
         </div>
       </div>
