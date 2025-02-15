@@ -50,7 +50,7 @@ const AwardComp: React.FC<ICertificateComp> = ({ awardInfo, currentIndex }) => {
   return (
     <Fragment>
       <TextField
-        label="Award name"
+        label="Certificate name"
         variant="filled"
         value={awardInfo.title}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ const AwardComp: React.FC<ICertificateComp> = ({ awardInfo, currentIndex }) => {
         sx={{ marginBottom: "26px" }}
       />
       <TextField
-        label="Awarded by"
+        label="Certificate by"
         variant="filled"
         value={awardInfo.certificater}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +94,7 @@ const AwardComp: React.FC<ICertificateComp> = ({ awardInfo, currentIndex }) => {
         }}
       />
       <RichtextEditor
-        label="About the award"
+        label="About the certificate"
         value={awardInfo.summary}
         onChange={onSummaryChange}
         name="summary"
