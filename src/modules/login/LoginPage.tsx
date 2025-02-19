@@ -8,6 +8,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import BannerImaige from "../../../public/cv2ceo.jpg";
 
 interface FormData {
   name: string;
@@ -205,7 +206,7 @@ const LoginPage: React.FC = () => {
       <div className="hidden bg-muted lg:block">
         <div className="relative h-full">
           <Image
-            src={"../../../public/cv2ceo.jpg"}
+            src={BannerImaige}
             alt="Authentication background"
             layout="fill"
             objectFit="contain"
