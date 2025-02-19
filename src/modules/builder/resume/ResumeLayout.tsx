@@ -23,7 +23,7 @@ export const ResumeLayout = () => {
   useEffect(() => {
     const selectedTemplateId =
       localStorage.getItem("selectedTemplateId") ||
-      AVAILABLE_TEMPLATES["modern"].id;
+      AVAILABLE_TEMPLATES["tempfour"].id;
     useTemplates
       .getState()
       .setTemplate(AVAILABLE_TEMPLATES[selectedTemplateId]);

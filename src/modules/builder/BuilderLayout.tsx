@@ -4,8 +4,20 @@ import NavBarLayout from "./nav-bar/NavBarLayout";
 import ResumeHeader from "./resume/components/ResumeHeader";
 import { ResumeLayout } from "./resume/ResumeLayout";
 import Tooltip from "@mui/material/Tooltip";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const BuilderLayout = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("user_token");
+    if (token) {
+      router.push("/builder");
+    } else {
+      router.push("/login");
+    }
+  }, []);
   return (
     <div className="flex flex-col h-screen">
       <NavBarLayout />

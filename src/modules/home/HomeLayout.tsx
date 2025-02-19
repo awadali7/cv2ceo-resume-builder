@@ -19,6 +19,15 @@ const HomeLayout = () => {
     damping: 17,
   };
 
+  const onUserClick = () => {
+    const user_token = localStorage.getItem("user_token");
+    if (user_token) {
+      window.location.href = "/builder";
+    } else {
+      window.location.href = "/login";
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -103,11 +112,17 @@ const HomeLayout = () => {
                   SRINIVAS - KATTA
                 </p>
               </div>
-              <Link href="/builder" passHref={true}>
-                <Button variant="contained" className="bg-resume-800 mb-2">
-                  BUILD YOUR RESUME
-                </Button>
-              </Link>
+              {/* <Link href="/builder" passHref={true}> */}
+              <Button
+                variant="contained"
+                onClick={() => {
+                  onUserClick();
+                }}
+                className="bg-resume-800 mb-2"
+              >
+                BUILD YOUR RESUME
+              </Button>
+              {/* </Link> */}
               <p
                 className="xl:invisible text-resume-800"
                 style={{ fontFamily: "'Roboto Slab', serif" }}
