@@ -7,210 +7,285 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import BannerImaige from "../../../public/cv2ceo.jpg";
+import { useEffect, useState, useRef } from "react";
+import {
+  ConfirmationResult,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+import BannerImage from "../../../public/cv2ceo.jpg";
+import { auth } from "../../../firebaseConfig";
 
 interface FormData {
-  name: string;
-  email: string;
   phone: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  phone?: string;
+  otp: string;
 }
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
     phone: "",
+    otp: "",
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<{ phone?: string; otp?: string }>({});
   const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [confirmationResult, setConfirmationResult] =
+    useState<ConfirmationResult | null>(null);
+
+  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("user_token");
     if (token) {
       router.push("/builder");
-    } else {
-      router.push("/login");
     }
+
+    // Initialize RecaptchaVerifier
+    if (!recaptchaVerifierRef.current) {
+      recaptchaVerifierRef.current = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "normal", // Changed from 'invisible' to 'normal'
+          callback: () => {
+            // Enable the send OTP button when reCAPTCHA is solved
+            const sendOtpButton = document.querySelector(
+              '[data-testid="send-otp-button"]',
+            );
+            if (sendOtpButton) {
+              (sendOtpButton as HTMLButtonElement).disabled = false;
+            }
+          },
+          "expired-callback": () => {
+            // Disable the send OTP button when reCAPTCHA expires
+            const sendOtpButton = document.querySelector(
+              '[data-testid="send-otp-button"]',
+            );
+            if (sendOtpButton) {
+              (sendOtpButton as HTMLButtonElement).disabled = true;
+            }
+            setErrors({ phone: "reCAPTCHA expired. Please verify again." });
+          },
+        },
+      );
+
+      // Force reCAPTCHA to render
+      recaptchaVerifierRef.current.render();
+    }
+
+    return () => {
+      if (recaptchaVerifierRef.current) {
+        recaptchaVerifierRef.current.clear();
+        recaptchaVerifierRef.current = null;
+      }
+    };
   }, []);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
+  const validatePhone = (): boolean => {
+    const newErrors: { phone?: string } = {};
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
     } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
-      newErrors.phone = "Please enter a valid 10-digit phone number";
+      newErrors.phone = "Enter a valid 10-digit phone number";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const router = useRouter();
+  const sendOtp = async () => {
+    if (!validatePhone() || !recaptchaVerifierRef.current) return;
 
-  const [loading, setLoading] = useState<boolean>(false);
+    setLoading(true);
+    try {
+      const phoneNumber = `+91${formData.phone.replace(/\D/g, "")}`;
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        recaptchaVerifierRef.current,
+      );
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSuccess(false);
-    setLoading(true); // Start loading
+      setConfirmationResult(confirmation);
+      setOtpSent(true);
+      setErrors({});
+    } catch (error: unknown) {
+      console.error("Error sending OTP:", error);
 
-    if (validateForm()) {
-      try {
-        const data = new FormData();
-        data.append("name", formData.name);
-        data.append("email", formData.email);
-        data.append("phone", formData.phone);
+      let errorMessage = "Failed to send OTP. Please try again.";
 
-        const response = await fetch(
-          "https://script.google.com/macros/s/AKfycbxBI1J6fdO2hlm_tiZQPe5Hq7oydkSA3-UW23KXgB8VYOTM0XhP2l9CfpdMAZO9mSI/exec",
+      // Type guard to check if error is an object with a 'code' property
+      if (typeof error === "object" && error !== null && "code" in error) {
+        const firebaseError = error as { code: string };
+
+        if (firebaseError.code === "auth/invalid-phone-number") {
+          errorMessage = "Invalid phone number format.";
+        } else if (firebaseError.code === "auth/quota-exceeded") {
+          errorMessage = "SMS quota exceeded. Please try again later.";
+        } else if (firebaseError.code === "auth/billing-not-enabled") {
+          errorMessage =
+            "Service temporarily unavailable. Please try again later.";
+        }
+      }
+
+      setErrors({ phone: errorMessage });
+
+      // Reset reCAPTCHA on error
+      if (recaptchaVerifierRef.current) {
+        recaptchaVerifierRef.current.clear();
+        recaptchaVerifierRef.current = new RecaptchaVerifier(
+          auth,
+          "recaptcha-container",
           {
-            method: "POST",
-            body: data,
+            size: "normal",
+            callback: () => {},
+            "expired-callback": () => {},
           },
         );
-
-        if (response.ok) {
-          localStorage.setItem("user_token", "access_builder");
-          setSuccess(true);
-          setFormData({ name: "", email: "", phone: "" });
-
-          const user_token = localStorage.getItem("user_token");
-          if (user_token) {
-            router.push("/builder");
-          }
-        } else {
-          console.error("Failed to submit form");
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
+        recaptchaVerifierRef.current.render();
       }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false); // Stop loading after API response
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const verifyOtp = async () => {
+    if (!formData.otp.trim() || formData.otp.length !== 6) {
+      setErrors({ otp: "Enter a valid 6-digit OTP" });
+      return;
+    }
 
-    // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+    if (!confirmationResult) {
+      setErrors({
+        otp: "OTP confirmation not initialized. Please request a new OTP.",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await confirmationResult.confirm(formData.otp);
+      localStorage.setItem("user_token", "access_builder");
+      setSuccess(true);
+      router.push("/builder");
+    } catch (error: unknown) {
+      console.error("Invalid OTP:", error);
+
+      let errorMessage = "Verification failed. Please try again.";
+
+      // Type guard to safely check the error object
+      if (typeof error === "object" && error !== null && "code" in error) {
+        const firebaseError = error as { code: string };
+
+        if (firebaseError.code === "auth/invalid-verification-code") {
+          errorMessage = "Invalid OTP. Please check and try again.";
+        }
+      }
+
+      setErrors({ otp: errorMessage });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="w-full lg:grid min-h-[100svh] lg:grid-cols-2">
       <div className="flex items-center justify-center py-12 w-full max-w-[470px] m-auto">
-        <form className="flex flex-col w-full gap-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col w-full gap-4">
           <h3 className="text-4xl mb-12 text-resume-800">
-            Enter the details to get started 👋
+            Enter your phone number 👋
           </h3>
-          <div>
-            <Input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              fullWidth
-              error={Boolean(errors.name)}
-            />
-            {errors.name && (
-              <Typography color="error" variant="caption">
-                {errors.name}
-              </Typography>
-            )}
-          </div>
 
-          <div>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              error={Boolean(errors.email)}
-            />
-            {errors.email && (
-              <Typography color="error" variant="caption">
-                {errors.email}
-              </Typography>
-            )}
-          </div>
+          {!otpSent ? (
+            <>
+              <Input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, phone: e.target.value }))
+                }
+                fullWidth
+                error={Boolean(errors.phone)}
+              />
+              {errors.phone && (
+                <Typography color="error" variant="caption">
+                  {errors.phone}
+                </Typography>
+              )}
 
-          <div>
-            <Input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              fullWidth
-              error={Boolean(errors.phone)}
-            />
-            {errors.phone && (
-              <Typography color="error" variant="caption">
-                {errors.phone}
-              </Typography>
-            )}
-          </div>
+              <div id="recaptcha-container" className="mb-4"></div>
+
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={sendOtp}
+                disabled={loading}
+                data-testid="send-otp-button"
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Send OTP"
+                )}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Input
+                type="text"
+                name="otp"
+                placeholder="Enter OTP"
+                value={formData.otp}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, otp: e.target.value }))
+                }
+                fullWidth
+                error={Boolean(errors.otp)}
+              />
+              {errors.otp && (
+                <Typography color="error" variant="caption">
+                  {errors.otp}
+                </Typography>
+              )}
+
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={verifyOtp}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Verify OTP"
+                )}
+              </Button>
+            </>
+          )}
 
           {success && (
             <Alert severity="success">
-              <Typography>Information submitted successfully!</Typography>
+              <Typography>Phone verified successfully!</Typography>
             </Alert>
           )}
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={loading}
-          >
-            {loading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              "Submit"
-            )}
-          </Button>
-        </form>
+        </div>
       </div>
+
       <div className="hidden bg-muted lg:block">
         <div className="relative h-full">
           <Image
-            src={BannerImaige}
+            src={BannerImage}
             alt="Authentication background"
             layout="fill"
             objectFit="contain"
-            className="h-full w-full object-contain "
+            className="h-full w-full object-contain"
           />
         </div>
       </div>
