@@ -1,22 +1,12 @@
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Input,
-  Typography,
-  TextField,
-  Stepper,
-  Step,
-  StepLabel,
-} from "@mui/material";
+import { Alert, Button, CircularProgress, TextField } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
-  ConfirmationResult,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
   updateProfile,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import BannerImage from "../../../public/cv2ceo.jpg";
@@ -26,7 +16,6 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
-  otp: string;
 }
 
 const LoginPage: React.FC = () => {
@@ -34,87 +23,97 @@ const LoginPage: React.FC = () => {
     name: "",
     email: "",
     phone: "",
-    otp: "",
   });
 
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
     phone?: string;
-    otp?: string;
   }>({});
 
-  const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [activeStep, setActiveStep] = useState<number>(0);
-  const [confirmationResult, setConfirmationResult] =
-    useState<ConfirmationResult | null>(null);
-
-  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+  const [emailSent, setEmailSent] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("user_token");
-    if (token) {
-      router.push("/builder");
-    }
+    const checkEmailVerification = async () => {
+      // Check if this is an email sign-in link
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        const email = localStorage.getItem("emailForSignIn");
+        const storedFormData = localStorage.getItem("userFormData");
 
-    // Initialize RecaptchaVerifier
-    if (!recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "normal",
-          callback: () => {
-            // Enable the send OTP button when reCAPTCHA is solved
-            const sendOtpButton = document.querySelector(
-              '[data-testid="send-otp-button"]',
+        if (email) {
+          try {
+            // Attempt to sign in with the email link
+            const result = await signInWithEmailLink(
+              auth,
+              email,
+              window.location.href,
             );
-            if (sendOtpButton) {
-              (sendOtpButton as HTMLButtonElement).disabled = false;
-            }
-          },
-          "expired-callback": () => {
-            // Disable the send OTP button when reCAPTCHA expires
-            const sendOtpButton = document.querySelector(
-              '[data-testid="send-otp-button"]',
-            );
-            if (sendOtpButton) {
-              (sendOtpButton as HTMLButtonElement).disabled = true;
-            }
-            setErrors({ phone: "reCAPTCHA expired. Please verify again." });
-          },
-        },
-      );
+            console.log("User signed in:", result.user);
 
-      // Force reCAPTCHA to render
-      recaptchaVerifierRef.current.render();
-    }
+            // Get the user
+            const user = result.user;
 
-    return () => {
-      if (recaptchaVerifierRef.current) {
-        recaptchaVerifierRef.current.clear();
-        recaptchaVerifierRef.current = null;
+            // If stored form data exists, use it to update profile and Firestore
+            if (storedFormData) {
+              const parsedFormData = JSON.parse(storedFormData);
+
+              // Update profile
+              await updateProfile(user, {
+                displayName: parsedFormData.name,
+              });
+
+              // Store user data in Firestore
+              await setDoc(doc(db, "user", user.uid), {
+                name: parsedFormData.name,
+                email: email,
+                phone: parsedFormData.phone,
+                uid: user.uid,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              });
+            }
+
+            // Store user ID as token
+            localStorage.setItem("user_token", user.uid);
+
+            // Remove temporary storage items
+            localStorage.removeItem("emailForSignIn");
+            localStorage.removeItem("userFormData");
+
+            // Remove query parameters from URL
+            window.history.replaceState({}, document.title, "/builder");
+
+            // Redirect to builder page
+            router.push("/builder");
+          } catch (error) {
+            console.error("Email link sign-in error:", error);
+            setErrors({
+              email:
+                "Verification failed. Please try again or request a new link.",
+            });
+          }
+        } else {
+          setErrors({
+            email:
+              "No email found for verification. Please start the process again.",
+          });
+        }
+      } else {
+        // Check if user is already logged in
+        const token = localStorage.getItem("user_token");
+        if (token) {
+          router.push("/builder");
+        }
       }
     };
-  }, []);
 
-  const validatePhone = (): boolean => {
-    const newErrors: { phone?: string } = {};
+    checkEmailVerification();
+  }, [router]);
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
-      newErrors.phone = "Enter a valid 10-digit phone number";
-    }
-
-    setErrors((prev) => ({ ...prev, ...newErrors }));
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const validateProfile = (): boolean => {
-    const newErrors: { name?: string; email?: string } = {};
+  const validateProfileData = (): boolean => {
+    const newErrors: { name?: string; email?: string; phone?: string } = {};
 
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
@@ -126,273 +125,52 @@ const LoginPage: React.FC = () => {
       newErrors.email = "Enter a valid email address";
     }
 
-    setErrors((prev) => ({ ...prev, ...newErrors }));
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^\+?[1-9]\d{6,14}$/.test(formData.phone.replace(/\s/g, ""))) {
+      newErrors.phone = "Enter a valid phone number";
+    }
+
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const sendOtp = async () => {
-    if (!validatePhone() || !recaptchaVerifierRef.current) return;
+  const sendEmailVerification = async () => {
+    if (!validateProfileData()) return;
 
     setLoading(true);
     try {
-      const phoneNumber = `+91${formData.phone.replace(/\D/g, "")}`;
-      const confirmation = await signInWithPhoneNumber(
-        auth,
-        phoneNumber,
-        recaptchaVerifierRef.current,
-      );
+      const actionCodeSettings = {
+        url: `${window.location.origin}/builder`,
+        handleCodeInApp: true,
+      };
 
-      setConfirmationResult(confirmation);
+      await sendSignInLinkToEmail(auth, formData.email, actionCodeSettings);
+
+      // Save email and form data for later use
+      localStorage.setItem("emailForSignIn", formData.email);
+      localStorage.setItem("userFormData", JSON.stringify(formData));
+
+      setEmailSent(true);
       setErrors({});
-      setActiveStep(1);
     } catch (error: unknown) {
-      console.error("Error sending OTP:", error);
+      console.error("Error sending email verification:", error);
 
-      let errorMessage = "Failed to send OTP. Please try again.";
+      let errorMessage = "Failed to send verification email. Please try again.";
 
-      // Type guard to check if error is an object with a 'code' property
       if (typeof error === "object" && error !== null && "code" in error) {
         const firebaseError = error as { code: string };
 
-        if (firebaseError.code === "auth/invalid-phone-number") {
-          errorMessage = "Invalid phone number format.";
-        } else if (firebaseError.code === "auth/quota-exceeded") {
-          errorMessage = "SMS quota exceeded. Please try again later.";
-        } else if (firebaseError.code === "auth/billing-not-enabled") {
-          errorMessage =
-            "Service temporarily unavailable. Please try again later.";
+        if (firebaseError.code === "auth/invalid-email") {
+          errorMessage = "Invalid email format.";
+        } else if (firebaseError.code === "auth/email-already-in-use") {
+          errorMessage = "Email is already registered.";
         }
       }
 
-      setErrors({ phone: errorMessage });
-
-      // Reset reCAPTCHA on error
-      if (recaptchaVerifierRef.current) {
-        recaptchaVerifierRef.current.clear();
-        recaptchaVerifierRef.current = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {
-            size: "normal",
-            callback: () => {},
-            "expired-callback": () => {},
-          },
-        );
-        recaptchaVerifierRef.current.render();
-      }
+      setErrors({ email: errorMessage });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const verifyOtp = async () => {
-    if (!formData.otp.trim() || formData.otp.length !== 6) {
-      setErrors({ otp: "Enter a valid 6-digit OTP" });
-      return;
-    }
-
-    if (!confirmationResult) {
-      setErrors({
-        otp: "OTP confirmation not initialized. Please request a new OTP.",
-      });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      setActiveStep(2);
-    } catch (error: unknown) {
-      console.error("Invalid OTP:", error);
-
-      let errorMessage = "Verification failed. Please try again.";
-
-      // Type guard to safely check the error object
-      if (typeof error === "object" && error !== null && "code" in error) {
-        const firebaseError = error as { code: string };
-
-        if (firebaseError.code === "auth/invalid-verification-code") {
-          errorMessage = "Invalid OTP. Please check and try again.";
-        }
-      }
-
-      setErrors({ otp: errorMessage });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const saveProfile = async () => {
-    if (!validateProfile()) return;
-
-    setLoading(true);
-    try {
-      // Get current user (should be authenticated after OTP verification)
-      const user = auth.currentUser;
-
-      if (!user) {
-        throw new Error("User not authenticated");
-      }
-
-      // Update profile with display name
-      await updateProfile(user, { displayName: formData.name });
-
-      // Store user data in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-
-      // Set token for future sessions
-      localStorage.setItem("user_token", "access_builder");
-
-      setSuccess(true);
-      router.push("/builder");
-    } catch (error) {
-      console.error("Error saving profile:", error);
-      setErrors({
-        name: "Failed to save profile. Please try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const renderStep = () => {
-    switch (activeStep) {
-      case 0:
-        return (
-          <>
-            <h3 className="text-4xl mb-12 text-resume-800">
-              Enter your phone number 👋
-            </h3>
-            <Input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, phone: e.target.value }))
-              }
-              fullWidth
-              error={Boolean(errors.phone)}
-            />
-            {errors.phone && (
-              <Typography color="error" variant="caption">
-                {errors.phone}
-              </Typography>
-            )}
-
-            <div id="recaptcha-container" className="mb-4"></div>
-
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={sendOtp}
-              disabled={loading}
-              data-testid="send-otp-button"
-            >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Send OTP"
-              )}
-            </Button>
-          </>
-        );
-      case 1:
-        return (
-          <>
-            <h3 className="text-4xl mb-12 text-resume-800">Verify OTP 🔐</h3>
-            <Input
-              type="text"
-              name="otp"
-              placeholder="Enter OTP"
-              value={formData.otp}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, otp: e.target.value }))
-              }
-              fullWidth
-              error={Boolean(errors.otp)}
-            />
-            {errors.otp && (
-              <Typography color="error" variant="caption">
-                {errors.otp}
-              </Typography>
-            )}
-
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={verifyOtp}
-              disabled={loading}
-            >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Verify OTP"
-              )}
-            </Button>
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <h3 className="text-4xl mb-12 text-resume-800">
-              Complete Your Profile ✨
-            </h3>
-            <div className="flex flex-col gap-4">
-              <TextField
-                label="Full Name"
-                name="name"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
-                fullWidth
-                error={Boolean(errors.name)}
-                helperText={errors.name}
-                variant="outlined"
-              />
-
-              <TextField
-                label="Email Address"
-                name="email"
-                type="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
-                }
-                fullWidth
-                error={Boolean(errors.email)}
-                helperText={errors.email}
-                variant="outlined"
-              />
-
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={saveProfile}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "Complete Registration"
-                )}
-              </Button>
-            </div>
-          </>
-        );
-      default:
-        return null;
     }
   };
 
@@ -400,25 +178,82 @@ const LoginPage: React.FC = () => {
     <div className="w-full lg:grid min-h-[100svh] lg:grid-cols-2">
       <div className="flex items-center justify-center py-12 w-full max-w-[470px] m-auto">
         <div className="flex flex-col w-full gap-4">
-          <Stepper activeStep={activeStep} className="mb-8">
-            <Step>
-              <StepLabel>Phone</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Verify</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Profile</StepLabel>
-            </Step>
-          </Stepper>
+          <h3 className="text-4xl mb-12 text-resume-800">
+            Create your account 👋
+          </h3>
 
-          {renderStep()}
-
-          {success && (
-            <Alert severity="success">
-              <Typography>Registration completed successfully!</Typography>
+          {emailSent && (
+            <Alert severity="info" className="mb-4">
+              Verification link sent to your email. Please check your inbox and
+              spam folder.
             </Alert>
           )}
+
+          {errors.email && (
+            <Alert severity="error" className="mb-4">
+              {errors.email}
+            </Alert>
+          )}
+
+          <div className="flex flex-col gap-4">
+            <TextField
+              label="Full Name"
+              name="name"
+              placeholder="Enter your full name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+              fullWidth
+              error={Boolean(errors.name)}
+              helperText={errors.name}
+              variant="outlined"
+            />
+
+            <TextField
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="Enter your email address"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, email: e.target.value }))
+              }
+              fullWidth
+              error={Boolean(errors.email)}
+              helperText={errors.email}
+              variant="outlined"
+            />
+
+            <TextField
+              label="Phone Number"
+              name="phone"
+              type="tel"
+              placeholder="Enter your phone number"
+              value={formData.phone}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, phone: e.target.value }))
+              }
+              fullWidth
+              error={Boolean(errors.phone)}
+              helperText={errors.phone}
+              variant="outlined"
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={sendEmailVerification}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Send Verification Email"
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+"use client";
+
 import EditorLayout from "./editor/EditorLayout";
 import Image from "next/image";
 import NavBarLayout from "./nav-bar/NavBarLayout";
@@ -5,19 +7,33 @@ import ResumeHeader from "./resume/components/ResumeHeader";
 import { ResumeLayout } from "./resume/ResumeLayout";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const BuilderLayout = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const token = localStorage.getItem("user_token");
-    if (token) {
-      router.push("/builder");
-    } else {
-      router.push("/login");
+    if (typeof window !== "undefined") {
+      const apiKey = searchParams.get("apiKey");
+
+      if (apiKey) {
+        localStorage.setItem("user_token", apiKey);
+        console.log("API Key stored:", apiKey);
+      }
     }
-  }, []);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("user_token");
+
+      if (!token) {
+        router.replace("/login");
+      }
+    }
+  }, [router]);
+
   return (
     <div className="flex flex-col h-screen">
       <NavBarLayout />
